@@ -1,0 +1,24 @@
+[package]
+name = "nautilus-shared-lib"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# Asynchronous runtime
+tokio.workspace = true
+tokio-util.workspace = true
+
+# CLI
+clap.workspace = true
+clap-num.workspace = true
+clap-verbosity.workspace = true
+num_cpus.workspace = true
+
+# Logging
+tracing.workspace = true
+tracing-chrome.workspace = true
+tracing-subscriber.workspace = true
+
+# Error handling
+error-stack.workspace = true
+thiserror.workspace = true
