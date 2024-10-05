@@ -3,6 +3,9 @@ on:
     branches:
       - main
 name: Build and Deploy to GitHub Pages
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     name: Build
