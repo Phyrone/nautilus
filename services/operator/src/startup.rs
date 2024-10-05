@@ -1,7 +1,7 @@
 use clap::{Args, Parser, Subcommand};
 use k8s_openapi::chrono::format::Pad;
-use steve_shared_lib::logging::LoggingParams;
-use steve_shared_lib::tokio::TokioRuntimeParams;
+use nautilus_shared_lib::logging::LoggingParams;
+use nautilus_shared_lib::tokio::TokioRuntimeParams;
 
 #[derive(Debug, Clone, Parser)]
 #[clap(version, author)]

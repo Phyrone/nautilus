@@ -6,8 +6,8 @@ use k8s_openapi::api::core::v1::{Container, Pod, PodSpec};
 use k8s_openapi::apimachinery::pkg::apis::meta::v1::ObjectMeta;
 use kube::api::{DeleteParams, Patch, PatchParams, PostParams, WatchEvent, WatchParams};
 use kube::{Api, Client};
-use steve_crds::{apply_crds, delete_crds};
-use steve_shared_lib::logging::init_logger;
+use nautilus_shared_crds::{apply_crds, delete_crds};
+use nautilus_shared_lib::logging::init_logger;
 use thiserror::Error;
 use tokio::time::{sleep, Instant};
 use tracing::info;
@@ -27,7 +27,7 @@ pub enum AppError {
 fn main() -> error_stack::Result<(), AppError> {
     let params = startup::StartupParams::parse();
     init_logger(&params.logging_params);
-    let runtime = steve_shared_lib::tokio::init_tokio_runtime(&params.tokio_runtime_params)
+    let runtime = nautilus_shared_lib::tokio::init_tokio_runtime(&params.tokio_runtime_params)
         .change_context(AppError::InitRuntime)?;
 
 

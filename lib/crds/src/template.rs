@@ -19,16 +19,16 @@ pub struct TemplateSpec {
 #[serde(untagged)]
 pub enum ServerTemplatePlatformSpecificSpec {
     PaperMC {
-        paper: PaperMcServerTemplateSpec
+ 
     },
     Velocity {
-        velocity: VelocityServerTemplateSpec
+       
     },
 }
 impl Default for ServerTemplatePlatformSpecificSpec {
     fn default() -> Self {
         ServerTemplatePlatformSpecificSpec::PaperMC {
-            paper: Default::default()
+          
         }
     }
 }
