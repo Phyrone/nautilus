@@ -1,0 +1,10 @@
+[package]
+name = "nautilus-builder"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+
+#Asynchronous runtime
+tokio.workspace = true
+tokio-util.workspace = true
