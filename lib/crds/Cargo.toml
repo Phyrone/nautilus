@@ -22,4 +22,4 @@ k8s-openapi.workspace = true
 
 
 # /lib
-steve-shared-lib.workspace = true
+nautilus-shared-lib.workspace = true

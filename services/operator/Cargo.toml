@@ -28,5 +28,5 @@ k8s-openapi.workspace = true
 
 # /lib
 nautilus-shared-lib.workspace = true
-steve-crds.workspace = true
+nautilus-shared-crds.workspace = true
 log = "0.4.22"
