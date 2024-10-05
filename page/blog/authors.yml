@@ -1,17 +1,15 @@
-endi:
-  name: Endilie Yacop Sucipto
-  title: Maintainer of Docusaurus
-  url: https://github.com/endiliey
-  image_url: https://github.com/endiliey.png
+phyrone:
+  name: S. Laqua (Phyrone)
+  #title: dont need a title
+  url: https://github.com/phyrone
+  image_url: https://github.com/phyrone.png
 
-yangshun:
-  name: Yangshun Tay
-  title: Front End Engineer @ Facebook
-  url: https://github.com/yangshun
-  image_url: https://github.com/yangshun.png
+MrFireDevil:
+  name: René (MrFireDevil)
+  url: https://github.com/MrFireDevil
+  image_url: https://github.com/MrFireDevil.png
 
-slorber:
-  name: Sébastien Lorber
-  title: Docusaurus maintainer
-  url: https://sebastienlorber.com
-  image_url: https://github.com/slorber.png
+SpigotYML:
+  name: Luis (SpigotYML)
+  url: https://github.com/SpigotYML
+  image_url: https://github.com/SpigotYML.png
