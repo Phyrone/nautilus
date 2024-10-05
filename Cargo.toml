@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["lib/crds", "lib/shared", "services/builder", "services/operator"]
+members = ["lib/crds", "lib/shared", "lib/grpc", "services/builder", "services/operator"]
 
 [workspace.package]
 version = "0.0.1"
@@ -36,12 +36,13 @@ tokio-util = { version = "0.7.11", features = ["full", "tracing"] }
 futures = { version = "0.3.30", features = ["std", "async-await", "compat"] }
 
 # Kubernetes
-kube = { version = "0.93.1", features = ["client", "config", "rustls-tls", "ws", "gzip", "derive", "kube-runtime", "runtime"] }
-k8s-openapi = { version = "0.22.0", features = ["latest", "schemars"] }
+kube = { version = "0.95.0", features = ["client", "config", "rustls-tls", "ws", "gzip", "derive", "kube-runtime", "runtime"] }
+k8s-openapi = { version = "0.23.0", features = ["latest", "schemars"] }
 
-oci-spec = { version = "0.6.8", features = ["image"] }
+oci-spec = { version = "0.7.0", features = ["image"] }
 
 
 # /lib
 nautilus-shared-lib = { path = "lib/shared" }
 nautilus-shared-crds = { path = "lib/crds" }
+nautilus-shared-grpc = { path = "lib/grpc" }

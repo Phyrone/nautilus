@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "common.proto";
+package nautilus.service.agent;
+
+message PlayerInfoRequest {
+  nautilus.common.UUID player = 1;
+}
+
+message PlayerInfoResponse{
+
+}
+
+service AgentBaseService{
+  rpc PlayerInfo(PlayerInfoRequest) returns (PlayerInfoResponse) {}
+
+}

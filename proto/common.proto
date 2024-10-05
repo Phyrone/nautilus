@@ -1,0 +1,7 @@
+syntax = "proto3";
+package nautilus.common;
+
+message UUID{
+  fixed64 msb = 1;
+  fixed64 lsb = 2;
+}
