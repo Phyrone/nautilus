@@ -13,7 +13,7 @@ dependencies {
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
     implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-api:2.19.0")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-core:2.19.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-core:2.20.0")
 
 }
 kotlin {
