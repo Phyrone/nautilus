@@ -1,0 +1,35 @@
+on:
+  push: { }
+name: Build
+jobs:
+  build_agent:
+    name: Build Java
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        name: Setup JDK
+        with:
+          distribution: 'adopt'
+          java-version: '21'
+          cache: 'gradle'
+      - uses: gradle/wrapper-validation-action@v3
+        name: Validate Gradle Wrapper
+      - name: Build
+        run: ./gradlew build
+      - name: Test
+        run: ./gradlew test
+  build_operator:
+    name: Build Rust
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        name: Setup Rust
+      - uses: Swatinem/rust-cache@v2
+        name: Cargo Cache
+      - name: Cargo Test
+        run: cargo test
+      - name: Cargo Build
+        run: cargo build
+
