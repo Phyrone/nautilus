@@ -2,5 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
-  ]
+  ],
+  "rebaseWhen": "behind-base-branch",
+  "commitMessagePrefix": "⬆\uFE0F"
 }
