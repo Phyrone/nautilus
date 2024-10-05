@@ -5,17 +5,23 @@ edition.workspace = true
 
 [dependencies]
 
-# Core
-either.workspace = true
-
 # Async
 tokio.workspace = true
 
-# Seriazliation
-serde.workspace = true
-schemars.workspace = true
-serde_json.workspace = true
+# GRPC
+tonic.workspace = true
+tonic-build.workspace = true
+prost.workspace = true
 
 
 # /lib
 nautilus-shared-lib.workspace = true
+
+[build-dependencies]
+walkdir.workspace = true
+tonic-build.workspace = true
+thiserror.workspace = true
+
+
+[lib]
+path = "src/main/rust/lib.rs"

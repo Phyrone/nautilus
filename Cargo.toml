@@ -10,6 +10,7 @@ edition = "2021"
 # Core
 num_cpus = { version = "1.16.0", features = [] }
 either = { version = "1.13.0", features = ["serde", "use_std"] }
+walkdir = "2.5.0"
 
 # Error handling
 error-stack = { version = "0.5.0", features = ["serde", "anyhow"] }
@@ -40,6 +41,12 @@ kube = { version = "0.95.0", features = ["client", "config", "rustls-tls", "ws",
 k8s-openapi = { version = "0.23.0", features = ["latest", "schemars"] }
 
 oci-spec = { version = "0.7.0", features = ["image"] }
+
+# GRPC
+prost = { version = "0.13.3", features = ["std", "derive"] }
+tonic = { version = "0.12.3", features = ["prost", "zstd", "gzip"] }
+tonic-types = { version = "0.12.3",features = [] }
+tonic-build = { version = "0.12.3", features = ["prost", "prost-build", "transport"] }
 
 
 # /lib
