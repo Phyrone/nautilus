@@ -27,6 +27,10 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+      - name: Setup Protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
       - name: Cargo Cache
