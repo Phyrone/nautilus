@@ -1,4 +1,4 @@
-package de.phyrone.steve.agent.paper
+package de.phyrone.nautilus.agent.paper
 
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
 
