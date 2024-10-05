@@ -3,8 +3,8 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-    title: 'My Site',
-    tagline: 'Dinosaurs are cool',
+    title: 'Nautilus Cloud',
+    //tagline: 'Dinosaurs are cool',
     favicon: 'img/favicon.ico',
 
     // Set the production url of your site here
@@ -38,14 +38,14 @@ const config: Config = {
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
                     editUrl:
-                        'https://github.com/Phyrone/nautilus/tree/main/page/',
+                        'https://github.com/Phyrone/nautilus/edit/main/page/',
                 },
                 blog: {
                     showReadingTime: true,
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
                     editUrl:
-                        'https://github.com/Phyrone/nautilus/tree/main/page/',
+                        'https://github.com/Phyrone/nautilus/edit/main/page/',
                 },
                 theme: {
                     customCss: './src/css/custom.css',
@@ -56,12 +56,12 @@ const config: Config = {
 
     themeConfig: {
         // Replace with your project's social card
-        image: 'img/docusaurus-social-card.jpg',
+        image: 'img/social-card.webp',
         navbar: {
             title: 'Nautilus Cloud',
             logo: {
                 alt: 'Nautilus Cloud Logo',
-                src: 'img/logo.svg',
+                src: 'img/logo.png',
             },
             items: [
                 {
