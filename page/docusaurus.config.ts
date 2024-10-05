@@ -94,6 +94,19 @@ const config: Config = {
                         },
                     ],
                 },
+                {
+                    title: 'Legal',
+                    items: [
+                        {
+                            label: 'Impressum',
+                            to: '/impressum/',
+                        },
+                        {
+                            label: 'Privacy Policy',
+                            to: 'https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement',
+                        },
+                    ],
+                },
             ],
             copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
         },
