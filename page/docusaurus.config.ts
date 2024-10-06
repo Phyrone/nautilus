@@ -86,12 +86,16 @@ const config: Config = {
             style: 'dark',
             links: [
                 {
-                    title: 'Docs',
+                    title: 'Code Documentation',
                     items: [
                         {
-                            label: 'Docs',
-                            to: '/docs/',
+                            label: 'Rust Docs (Operator)',
+                            href: '/rust/nautilus_operator/',
                         },
+                        {
+                            label: 'Kotlin Docs',
+                            href: '/kotlin/',
+                        }
                     ],
                 },
                 {
