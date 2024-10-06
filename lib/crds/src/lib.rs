@@ -1,14 +1,11 @@
-mod service;
-mod template;
-
+pub mod service;
+pub mod template;
 
 use k8s_openapi::apiextensions_apiserver::pkg::apis::apiextensions::v1::CustomResourceDefinition;
 use kube::api::{DeleteParams, Patch, PatchParams, Preconditions};
 use kube::{Api, Client, CustomResource, CustomResourceExt};
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 use tokio::{try_join, join};
-use crate::service::{Service};
+use crate::service::MinecraftService;
 use crate::template::Template;
 
 async fn apply_crd<T>(api: &Api<CustomResourceDefinition>) -> kube::Result<CustomResourceDefinition>
@@ -43,6 +40,6 @@ macro_rules! crd_impl {
 }
 
 crd_impl!(
-    Service,
+    MinecraftService,
     Template
 );
