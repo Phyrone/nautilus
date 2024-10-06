@@ -4,6 +4,7 @@ plugins {
     idea
     kotlin("jvm")
     id("com.google.protobuf")
+    id("org.jetbrains.dokka")
 }
 
 repositories {

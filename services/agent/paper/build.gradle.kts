@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    id("org.jetbrains.dokka")
 }
 
 
@@ -8,6 +9,8 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 dependencies {
+    implementation(project(":agent:shared"))
+
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
 
     // Coroutines

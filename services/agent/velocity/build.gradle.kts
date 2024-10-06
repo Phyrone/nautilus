@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm")
     kotlin("kapt")
+    id("org.jetbrains.dokka")
 }
 
 
@@ -9,6 +10,8 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 dependencies {
+    implementation(project(":agent:shared"))
+
     compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
     kapt("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
 
