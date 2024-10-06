@@ -1,3 +1,4 @@
+use either::Either;
 use kube::CustomResource;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -5,10 +6,10 @@ use serde::{Deserialize, Serialize};
 #[derive(CustomResource, Debug, Default, Serialize, Deserialize, Clone, JsonSchema)]
 #[kube(
     group = "minecraft.phyrone.de",
-    version = "v1alpha1",
-    kind = "Template",
+    version = "v1",
+    kind = "Service",
     namespaced
 )]
-pub struct TemplateSpec {
-    
+pub struct ServerSpec {
+
 }

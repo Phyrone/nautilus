@@ -1,4 +1,4 @@
-mod instance;
+mod service;
 mod template;
 
 
@@ -8,7 +8,7 @@ use kube::{Api, Client, CustomResource, CustomResourceExt};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use tokio::{try_join, join};
-use crate::instance::Server;
+use crate::service::{Service};
 use crate::template::Template;
 
 async fn apply_crd<T>(api: &Api<CustomResourceDefinition>) -> kube::Result<CustomResourceDefinition>
@@ -43,6 +43,6 @@ macro_rules! crd_impl {
 }
 
 crd_impl!(
-    Server,
+    Service,
     Template
 );
