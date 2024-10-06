@@ -59,7 +59,7 @@ jobs:
 
   cargo:
     name: Cargo
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
