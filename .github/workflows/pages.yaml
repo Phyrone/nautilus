@@ -111,7 +111,14 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'bundle'
-
+      - name: Delete Artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          failOnError: 'true'
+          name: -|
+            docusaurus
+            dokka
+            cargo
 
   deploy:
     runs-on: ubuntu-latest
