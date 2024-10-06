@@ -90,11 +90,11 @@ const config: Config = {
                     items: [
                         {
                             label: 'Rust Docs (Operator)',
-                            href: '/rust/nautilus_operator/',
+                            href: 'https://phyrone.github.io/nautilus/rust/nautilus_operator/',
                         },
                         {
                             label: 'Kotlin Docs',
-                            href: '/kotlin/',
+                            href: 'https://phyrone.github.io/nautilus/kotlin/',
                         }
                     ],
                 },
