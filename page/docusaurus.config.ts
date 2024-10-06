@@ -85,6 +85,8 @@ const config: Config = {
         footer: {
             style: 'dark',
             links: [
+                /*
+                //currently broken by client side routing
                 {
                     title: 'Code Documentation',
                     items: [
@@ -98,6 +100,8 @@ const config: Config = {
                         }
                     ],
                 },
+
+                 */
                 {
                     title: 'Legal',
                     items: [
