@@ -9,6 +9,7 @@ fn main() {
         .build_transport(true)
         .emit_rerun_if_changed(false)
         .include_file("_all.rs")
+        //makes it easier to inspect the generated code it gets ignored by git
         .out_dir("src/main/rust/");
 
     //get proto files from ../../proto
