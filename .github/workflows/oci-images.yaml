@@ -28,7 +28,7 @@ jobs:
           pull: true
           push: true
           tags: |-
-            ghcr.io/${{ github.repository_owner }}/nautilus-operator:${{ github.ref_name }}
+            ghcr.io/phyrone/nautilus-operator:${{ github.ref_name }}
           file: ./services/operator/Dockerfile
           context: .
           labels: |-
