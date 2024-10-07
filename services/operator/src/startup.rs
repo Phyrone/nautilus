@@ -1,4 +1,4 @@
-use clap::{Args, Parser, Subcommand};
+use clap::{Args, Parser, Subcommand, ValueEnum};
 use k8s_openapi::chrono::format::Pad;
 use nautilus_shared_lib::logging::LoggingParams;
 use nautilus_shared_lib::tokio::TokioRuntimeParams;
@@ -12,22 +12,21 @@ pub struct StartupParams {
     #[clap(flatten)]
     pub logging_params: LoggingParams,
 
-    #[clap(subcommand)]
-    pub subcommand: Option<Subcommands>,
+    #[clap(short, long, default_value = "apply")]
+    pub crds: ResourceDefinitionsStrategy,
 }
 
-#[derive(Debug, Clone, Subcommand)]
-pub enum Subcommands {
-    Crd(CRDSubcommandParams),
-}
-#[derive(Debug, Clone, Args)]
-pub struct CRDSubcommandParams {
-    #[clap(subcommand)]
-    pub subcommand: CrdSubbcommands,
-}
-#[derive(Debug, Clone, Subcommand)]
-pub enum CrdSubbcommands {
+#[derive(Debug, Default, Clone, ValueEnum)]
+pub enum ResourceDefinitionsStrategy {
+    /// Fail if the CRD's are missing. This might become the default in the future.
+    #[clap(name = "fail-if-missing")]
+    Fail,
+    /// Apply the CRD's if they are missing. Forwards the CRD's if they are already present.
+    /// This is the default behavior for now (at least during development).
+    #[default]
+    #[clap(name = "apply")]
     Apply,
-    Delete,
-    Export,
+    /// Do nothing bout the CRD's. Its to the administrator to ensure they are present and up to date.
+    #[clap(name = "ignore")]
+    Ignore,
 }

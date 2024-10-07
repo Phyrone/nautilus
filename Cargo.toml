@@ -19,7 +19,7 @@ thiserror = "1.0.63"
 # Logging,CLI co.
 tracing = "0.1.40"
 tracing-chrome = "0.7.2"
-tracing-subscriber = { version = "0.3.18", features = ["std", "serde_json", "ansi", "alloc", "tracing", "fmt"] }
+tracing-subscriber = { version = "0.3.18", features = ["std", "serde_json", "ansi", "alloc", "tracing", "fmt", "json","env-filter"] }
 
 dotenv = "0.15.0"
 clap = { version = "4.5.14", features = ["std", "derive", "string", "unicode", "suggestions", "env"] }
@@ -30,6 +30,7 @@ clap-verbosity = "2.1.0"
 serde = { version = "1.0.206", features = ["std", "alloc", "rc", "derive"] }
 schemars = { version = "0.8.21", features = ["derive", "semver"] }
 serde_json = { version = "1.0.124", features = ["alloc", "preserve_order"] }
+serde_yml = { version = "0.0.12", features = [] }
 
 # Asynchronous runtime
 tokio = { version = "1.39.2", features = ["full", "tracing", "parking_lot"] }
@@ -45,7 +46,7 @@ oci-spec = { version = "0.7.0", features = ["image"] }
 # GRPC
 prost = { version = "0.13.3", features = ["std", "derive"] }
 tonic = { version = "0.12.3", features = ["prost", "zstd", "gzip"] }
-tonic-types = { version = "0.12.3",features = [] }
+tonic-types = { version = "0.12.3", features = [] }
 tonic-build = { version = "0.12.3", features = ["prost", "prost-build", "transport"] }
 
 

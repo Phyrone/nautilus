@@ -1,6 +1,9 @@
 syntax = "proto3";
 import "common.proto";
 package nautilus.service.agent;
+option optimize_for = SPEED;
+option java_generate_equals_and_hash = true;
+option java_string_check_utf8 = true;
 option java_multiple_files = true;
 option java_package = "de.phyrone.nautilus.grpc.generated.agent";
 
@@ -14,5 +17,5 @@ message PlayerInfoResponse{
 
 service AgentBaseService{
   rpc PlayerInfo(PlayerInfoRequest) returns (PlayerInfoResponse) {}
-  
+
 }
