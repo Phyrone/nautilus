@@ -2,7 +2,8 @@ fn main() {
     println!("cargo:rerun-if-changed=../../proto");
 
     let builder = tonic_build::configure();
-    let builder = builder.compile_well_known_types(true)
+    let builder = builder
+        .compile_well_known_types(true)
         .use_arc_self(true)
         .build_client(true)
         .build_server(true)
@@ -20,9 +21,7 @@ fn main() {
         .map(|e| e.path().to_path_buf())
         .collect::<Vec<_>>();
 
-
-    builder.compile_protos(
-        &files,
-        &["../../proto"],
-    ).expect("Failed to compile protos");
+    builder
+        .compile_protos(&files, &["../../proto"])
+        .expect("Failed to compile protos");
 }

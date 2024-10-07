@@ -7,6 +7,7 @@ plugins {
     id("org.jetbrains.dokka") version "1.9.20"
     id("com.github.ben-manes.versions") version "0.51.0"
     //id("kr.entree.spigradle") version "2.4.3" apply false
+    id("com.google.cloud.tools.jib") version "3.4.3" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 
     id("com.google.protobuf") version "0.9.4" apply false

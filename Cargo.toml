@@ -19,7 +19,7 @@ thiserror = "1.0.63"
 # Logging,CLI co.
 tracing = "0.1.40"
 tracing-chrome = "0.7.2"
-tracing-subscriber = { version = "0.3.18", features = ["std", "serde_json", "ansi", "alloc", "tracing", "fmt"] }
+tracing-subscriber = { version = "0.3.18", features = ["std", "serde_json", "ansi", "alloc", "tracing", "fmt", "json","env-filter"] }
 
 dotenv = "0.15.0"
 clap = { version = "4.5.14", features = ["std", "derive", "string", "unicode", "suggestions", "env"] }

@@ -1,8 +1,8 @@
+use crate::template::MinecraftTemplateV1a1Spec;
 use k8s_openapi::api::core::v1::PodSpec;
 use kube::CustomResource;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use crate::template::TemplateSpec;
 
 /// Define a Minecraft service
 /// The nautilus operator will create the necessary resources to run the service.
@@ -14,52 +14,63 @@ use crate::template::TemplateSpec;
 #[derive(CustomResource, Debug, Default, Serialize, Deserialize, Clone, JsonSchema)]
 #[kube(
     group = "minecraft.phyrone.de",
-    version = "v1",
+    version = "v1apha1",
     kind = "MinecraftService",
     namespaced
 )]
-pub struct MinecraftServiceSpec {
+pub struct MinecraftServiceV1a1Spec {
     pub template: TemplateData,
-    pub instances: InstancesSpec,
+    pub instances: ReplicaInstacesSpec,
     pub persistent: Option<PersistencySpec>,
-
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
+#[serde(untagged)]
+//take single
+pub enum InstancesSpec {
+    Singleton(SingletonInstanceSpec),
+    Replicas(ReplicaInstacesSpec),
+}
+impl Default for InstancesSpec {
+    fn default() -> Self {
+        InstancesSpec::Singleton(SingletonInstanceSpec::default())
+    }
+}
 
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 #[serde(untagged)]
 pub enum TemplateData {
-    /// Look up a template by name (implicit)
-    RefNamedImplicit(String),
     /// Look up a template by name (explicit)
-    RefNamedExplici {
+    Ref {
         #[serde(rename = "ref", alias = "reference")]
         reference: String,
     },
     /// Inline template spec
-    TemplateSpec {
-        spec: TemplateSpec
-    },
+    TemplateSpec { spec: MinecraftTemplateV1a1Spec },
 }
 impl Default for TemplateData {
     fn default() -> Self {
-        TemplateData::RefNamedImplicit("".to_string())
+        TemplateData::Ref {
+            reference: "".to_string(),
+        }
     }
 }
 
+
 #[derive(Debug, Default, Serialize, Deserialize, Clone, JsonSchema)]
-pub struct InstancesSpec {
+pub struct ReplicaInstacesSpec {
     #[serde(default, alias = "count")]
-    pub replicas: Option<u32>,
-    /// If true, only one instance will be created [replicas] will be ignored.
-    #[serde(default)]
-    pub solo: bool,
-    //TODO autoscaling
+    pub replicas: u32,
 }
+#[derive(Debug, Default, Serialize, Deserialize, Clone, JsonSchema)]
+pub struct SingletonInstanceSpec {
+    pub singleton: bool,
+}
+
 
 #[derive(Debug, Default, Serialize, Deserialize, Clone, JsonSchema)]
 pub struct PersistencySpec {
-    /// If true, a persistent volume claim will be created. 
+    /// If true, a persistent volume claim will be created.
     /// It also changes to naming from random to sequential except for solo instances.
     pub enabled: bool,
     /// The storage class to use for the persistent volume claim

@@ -7,11 +7,11 @@ use serde::{Deserialize, Serialize};
 #[kube(
     group = "minecraft.phyrone.de",
     version = "v1alpha1",
-    kind = "Template",
+    kind = "MinecraftTemplate",
     namespaced
 )]
-pub struct TemplateSpec {
-    /// Base image to use for the template 
+pub struct MinecraftTemplateV1a1Spec {
+    /// Base image to use for the template
     pub image: Option<String>,
     /// Pull a template from the given source
     pub source: Option<SourceRef>,
@@ -23,12 +23,8 @@ pub struct TemplateSpec {
 #[serde(untagged)]
 //TODO open up for any kind of source
 pub enum SourceRef {
-    Git {
-        git: GitSource
-    },
-    Artifact {
-        artifact: ArtifactSource
-    },
+    Git { git: GitSource },
+    Artifact { artifact: ArtifactSource },
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, Clone, JsonSchema)]
@@ -48,18 +44,20 @@ pub struct InstallSpec {
 
     #[serde(flatten)]
     pub plugins: Option<InstallPluginsSpec>,
-
 }
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 #[serde(untagged)]
 pub enum PlatformInstallSpec {
-    Paper {
-        paper: PaperInstallSpec
-    },
-    Velocity {
-        velocity: VelocityInstallSpec
-    },
+    Paper { paper: PaperInstallSpec },
+    Velocity { velocity: VelocityInstallSpec },
     //TODO forge, fabric, folia, bungeecord
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
+enum PaperFlavor {
+    Paper,
+    Folia,
+    Purpur,
 }
 
 fn latest() -> String {
@@ -71,6 +69,7 @@ pub struct PaperInstallSpec {
     //default to latest
     #[serde(default = "latest")]
     pub version: String,
+    pub flavor: Option<PaperFlavor>,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, Clone, JsonSchema)]
