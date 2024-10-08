@@ -5,6 +5,8 @@ edition.workspace = true
 
 [dependencies]
 
+# Base
+
 # Logging,CLI co.
 tracing.workspace = true
 clap.workspace = true

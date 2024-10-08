@@ -16,7 +16,6 @@ use nautilus_shared_crds::service::MinecraftService;
 use crate::startup::ResourceDefinitionsStrategy;
 
 mod startup;
-mod service;
 
 #[derive(Debug, Error)]
 pub enum AppError {
@@ -58,32 +57,12 @@ async fn async_main(
 
     let services = Api::<MinecraftService>::all(client.clone());
     
-    
     info!("Watching services");
-    let mut services = services.watch(&WatchParams::default(), "0")
+    let mut services = services.watch(&Default::default(), "0")
         .await
         .change_context(AppError::K8sClient)?
         .boxed();
-
-    while let Some(event) = services.try_next().await.unwrap() {
-        match event {
-            WatchEvent::Added(a) => {
-                info!("Added: {:?}", a.metadata.name);
-            }
-            WatchEvent::Modified(a) => {
-                info!("Modified: {:?}", a.metadata.name);
-            }
-            WatchEvent::Deleted(a) => {
-                info!("Deleted: {:?}", a.metadata.name);
-            }
-            WatchEvent::Bookmark(a) => {
-                info!("Bookmark: {:?}", serde_json::to_string(&a).unwrap());
-            }
-            WatchEvent::Error(a) => {}
-        }
-    }
-
-    Ok(())
+    todo!()
 }
 
 #[derive(Debug, Error)]

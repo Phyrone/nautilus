@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["lib/crds", "lib/shared", "lib/grpc", "services/builder", "services/operator"]
+members = ["lib/crds", "lib/shared", "lib/grpc", "services/builder", "services/operator", "services/provisioner"]
 
 [workspace.package]
 version = "0.0.1"
@@ -11,6 +11,8 @@ edition = "2021"
 num_cpus = { version = "1.16.0", features = [] }
 either = { version = "1.13.0", features = ["serde", "use_std"] }
 walkdir = "2.5.0"
+hashbrown = { version = "0.15.0", features = ["serde", "default-hasher"] }
+url = { version = "2.5.2", features = ["serde"] }
 
 # Error handling
 error-stack = { version = "0.5.0", features = ["serde", "anyhow"] }
@@ -19,7 +21,7 @@ thiserror = "1.0.63"
 # Logging,CLI co.
 tracing = "0.1.40"
 tracing-chrome = "0.7.2"
-tracing-subscriber = { version = "0.3.18", features = ["std", "serde_json", "ansi", "alloc", "tracing", "fmt", "json","env-filter"] }
+tracing-subscriber = { version = "0.3.18", features = ["std", "serde_json", "ansi", "alloc", "tracing", "fmt", "json", "env-filter"] }
 
 dotenv = "0.15.0"
 clap = { version = "4.5.14", features = ["std", "derive", "string", "unicode", "suggestions", "env"] }
@@ -48,6 +50,9 @@ prost = { version = "0.13.3", features = ["std", "derive"] }
 tonic = { version = "0.12.3", features = ["prost", "zstd", "gzip"] }
 tonic-types = { version = "0.12.3", features = [] }
 tonic-build = { version = "0.12.3", features = ["prost", "prost-build", "transport"] }
+
+# Git
+git2 = { version = "0.19.0", features = ["https", "ssh"] }
 
 
 # /lib
