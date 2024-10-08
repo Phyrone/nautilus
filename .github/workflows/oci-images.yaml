@@ -30,6 +30,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           pull: true
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |-
             ghcr.io/phyrone/nautilus-operator:${{ github.ref_name }}
           file: ./services/operator/Dockerfile
@@ -64,6 +66,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           pull: true
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |-
             ghcr.io/phyrone/nautilus-builder:${{ github.ref_name }}
           file: ./services/builder/Dockerfile
