@@ -4,5 +4,6 @@
     "config:recommended"
   ],
   "rebaseWhen": "behind-base-branch",
-  "commitMessagePrefix": "⬆\uFE0F"
+  "commitMessagePrefix": "⬆\uFE0F",
+  "automerge": true
 }
