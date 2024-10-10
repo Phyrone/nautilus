@@ -3,6 +3,8 @@ use clap_verbosity::{InfoLevel, LevelFilter};
 use tracing::instrument::WithSubscriber;
 use tracing::subscriber;
 use tracing_chrome::TraceStyle;
+use tracing_subscriber::filter::filter_fn;
+use tracing_subscriber::fmt::format::FmtSpan;
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::util::SubscriberInitExt;
 
@@ -10,6 +12,10 @@ use tracing_subscriber::util::SubscriberInitExt;
 pub struct LoggingParams {
     #[clap(flatten)]
     pub verbosity: clap_verbosity::Verbosity<InfoLevel>,
+
+    /// Whether to output logs in JSON format.
+    #[clap(long = "log-json")]
+    pub json: bool,
 }
 
 pub fn init_logger(loggin_params: &LoggingParams) {
@@ -22,14 +28,23 @@ pub fn init_logger(loggin_params: &LoggingParams) {
         LevelFilter::Trace => tracing::level_filters::LevelFilter::TRACE,
     };
 
-    tracing_subscriber::fmt()
-        .compact()
+    let buildr = tracing_subscriber::fmt()
         .with_max_level(level)
         .with_ansi(true)
         .with_thread_names(true)
-        .with_target(false)
-        .with_line_number(false)
         .with_thread_ids(false)
-        .with_writer(std::io::stdout)
-        .init();
+        .with_target(true)
+        .with_writer(std::io::stdout);
+
+    if (loggin_params.json) {
+        buildr
+            .json()
+            .flatten_event(true)
+            .init();
+    } else {
+        buildr.with_span_events(FmtSpan::NONE)
+            .compact()
+            .init();
+        ;
+    }
 }
