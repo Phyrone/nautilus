@@ -2,7 +2,7 @@ plugins {
     idea
     base
     kotlin("jvm") version "2.0.21" apply false
-    kotlin("kapt") version "2.0.20" apply false
+    kotlin("kapt") version "2.0.21" apply false
 
     id("org.jetbrains.dokka") version "1.9.20"
     id("com.github.ben-manes.versions") version "0.51.0"
