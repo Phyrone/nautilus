@@ -1,19 +1,22 @@
-use std::time::Duration;
+use std::pin::pin;
 use clap::Parser;
-use error_stack::ResultExt;
+use error_stack::{Report, ResultExt};
 use futures::{StreamExt, TryStreamExt};
 use k8s_openapi::api::core::v1::{Container, Pod, PodSpec};
 use k8s_openapi::apimachinery::pkg::apis::meta::v1::ObjectMeta;
 use kube::api::{DeleteParams, Patch, PatchParams, PostParams, WatchEvent, WatchParams};
 use kube::{Api, Client};
-use nautilus_shared_crds::{apply_crds, delete_crds};
+use nautilus_shared_crds::{all_crds_exist, apply_crds, delete_crds};
 use nautilus_shared_lib::logging::init_logger;
+use std::time::Duration;
 use thiserror::Error;
 use tokio::time::{sleep, Instant};
-use tracing::info;
-use crate::startup::{CrdSubbcommands, Subcommands};
+use tracing::{info, instrument};
+use nautilus_shared_crds::service::MinecraftService;
+use crate::startup::ResourceDefinitionsStrategy;
 
 mod startup;
+mod service;
 
 #[derive(Debug, Error)]
 pub enum AppError {
@@ -22,6 +25,9 @@ pub enum AppError {
 
     #[error("cannot create k8s client")]
     K8sClient,
+
+    #[error("something went wrong while applying or checking crds")]
+    ApplyCrds,
 }
 
 fn main() -> error_stack::Result<(), AppError> {
@@ -30,87 +36,84 @@ fn main() -> error_stack::Result<(), AppError> {
     let runtime = nautilus_shared_lib::tokio::init_tokio_runtime(&params.tokio_runtime_params)
         .change_context(AppError::InitRuntime)?;
 
-
     runtime.block_on(async_main(params, &runtime))?;
     Ok(())
 }
 
+#[instrument(level = "debug")]
 async fn async_main(
     params: startup::StartupParams,
     runtime: &tokio::runtime::Runtime,
 ) -> error_stack::Result<(), AppError> {
     info!("Connecting to kubernetes...");
     let time = Instant::now();
-    let client = Client::try_default().await
+    let client = Client::try_default()
+        .await
         .change_context(AppError::K8sClient)?;
     let time = time.elapsed();
     info!("Connection to kubernetes established ({:?})", time);
-    info!(" default-namespace: {}", client.default_namespace());
-    //let a = Api::<ServerFleet>::all(client.clone());
+    startup_apply_crds(client.clone(), &params)
+        .await
+        .change_context(AppError::ApplyCrds)?;
 
-    match &params.subcommand {
-        None => {
-            
-            let mut pods = Vec::new();
-            for i in 0..30{
-                let api = Api::<Pod>::namespaced(client.clone(), "mcnet");
-                let pod = Pod {
-                    status: None,
-                    metadata: ObjectMeta {
-                        generate_name: Some("bedwars-".to_string()),
-                        namespace: Some("mcnet".to_string()),
-                        ..Default::default()
-                    },
-                    spec: Some(PodSpec {
-                        containers: vec![Container {
-                            name: "nginx".to_string(),
-                            image: Some("nginx".to_string()),
-                            ..Default::default()
-                        }],
-                        ..Default::default()
-                    }),
-                };
-                let created = api.create(&PostParams::default(), &pod).await.unwrap();
-                pods.push(created);
+    let services = Api::<MinecraftService>::all(client.clone());
+    
+    
+    info!("Watching services");
+    let mut services = services.watch(&WatchParams::default(), "0")
+        .await
+        .change_context(AppError::K8sClient)?
+        .boxed();
+
+    while let Some(event) = services.try_next().await.unwrap() {
+        match event {
+            WatchEvent::Added(a) => {
+                info!("Added: {:?}", a.metadata.name);
             }
-            println!("Created pods");
-            sleep(Duration::from_secs(30)).await;
-            for pod in pods {
-                let api = Api::<Pod>::namespaced(client.clone(), "mcnet");
-                let _ = api.delete(&pod.metadata.name.unwrap(), &DeleteParams::default()).await;
+            WatchEvent::Modified(a) => {
+                info!("Modified: {:?}", a.metadata.name);
             }
-            println!("Deleted pods");
-        }
-        Some(Subcommands::Crd(crd_params)) => {
-            handle_crds_subcommand(client.clone(), crd_params).await;
+            WatchEvent::Deleted(a) => {
+                info!("Deleted: {:?}", a.metadata.name);
+            }
+            WatchEvent::Bookmark(a) => {
+                info!("Bookmark: {:?}", serde_json::to_string(&a).unwrap());
+            }
+            WatchEvent::Error(a) => {}
         }
     }
-
 
     Ok(())
 }
 
-async fn handle_crds_subcommand(
+#[derive(Debug, Error)]
+enum ApplyCrdsError {
+    #[error("error when applying crds")]
+    Apply,
+    #[error("error when checking crds")]
+    Check,
+    #[error("some crds are missing")]
+    Missing,
+}
+
+async fn startup_apply_crds(
     client: Client,
-    params: &startup::CRDSubcommandParams,
-) {
-    match &params.subcommand {
-        CrdSubbcommands::Apply => {
-            info!("Applying CRDs...");
-            let time = Instant::now();
-            apply_crds(client).await.unwrap();
-            let time = time.elapsed();
-            info!("CRDs applied successfully ({:?})", time);
+    params: &startup::StartupParams,
+) -> error_stack::Result<(), ApplyCrdsError> {
+    match &params.crds {
+        ResourceDefinitionsStrategy::Fail => {
+            let all_crds_exist = all_crds_exist(client).await
+                .change_context(ApplyCrdsError::Check)?;
+            if !all_crds_exist {
+                return Err(Report::new(ApplyCrdsError::Missing));
+            }
         }
-        CrdSubbcommands::Delete => {
-            info!("Deleting CRDs...");
-            let time = Instant::now();
-            delete_crds(client).await;
-            let time = time.elapsed();
-            info!("CRDs deleted successfully ({:?})", time);
+        ResourceDefinitionsStrategy::Apply => {
+            apply_crds(client).await
+                .change_context(ApplyCrdsError::Apply)?;
         }
-        CrdSubbcommands::Export => {
-            todo!()
-        }
+        ResourceDefinitionsStrategy::Ignore => {}
     }
+
+    Ok(())
 }
