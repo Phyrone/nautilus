@@ -7,7 +7,6 @@ use git2::{Repository, RepositoryInitMode, RepositoryInitOptions};
 use thiserror::Error;
 use tracing::info;
 use url::Url;
-use crate::ProvisionerError::Io;
 
 const REMOTE_NAME: &str = "origin";
 
@@ -68,12 +67,11 @@ fn main() -> error_stack::Result<(), ProvisionerErrorRoot> {
     }
     let repo = get_git_repo(&data_dir).change_context(ProvisionerErrorRoot)?;
 
+
     //checkout branch
-    repo.remote_set_url(REMOTE_NAME, &params.repository.to_string())
+    repo.remote_set_url(REMOTE_NAME, params.repository.as_ref())
         .change_context(ProvisionerError::Git)
         .change_context(ProvisionerErrorRoot)?;
-    let remote = get_or_create_remote(repo).change_context(ProvisionerErrorRoot)?;
-
 
     //if is not initialized yet clone repo
     if repo.is_empty()
@@ -88,6 +86,7 @@ fn main() -> error_stack::Result<(), ProvisionerErrorRoot> {
             .change_context(ProvisionerError::Git)
             .change_context(ProvisionerErrorRoot)?;
         info!("current branch: {:?}", branch.name());
+        
     }
 
 
@@ -97,22 +96,13 @@ fn main() -> error_stack::Result<(), ProvisionerErrorRoot> {
 //data dir exists and a git repo is present but not its up to date
 fn get_git_repo(
     data_dir: &Path,
-) -> error_stack::Result<git2::Repository, ProvisionerError> {
+) -> error_stack::Result<Repository, ProvisionerError> {
     let mut init_options = RepositoryInitOptions::new();
     init_options.bare(false)
         .mkpath(true)
         .no_dotgit_dir(false)
         .no_reinit(false);
-    let repo = Repository::init_opts(&data_dir, &init_options)
+    let repo = Repository::init_opts(data_dir, &init_options)
         .change_context(ProvisionerError::Io)?;
     Ok(repo)
-}
-
-
-fn get_or_create_remote(
-    repository: Repository,
-) -> error_stack::Result<git2::Remote, ProvisionerError> {
-    let remote = repository.find_remote(REMOTE_NAME)
-        .change_context(ProvisionerError::Git)?;
-    Ok(remote)
 }
