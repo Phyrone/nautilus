@@ -2,6 +2,14 @@ plugins {
     idea
     base
 
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.kotlin.plugin.noarg) apply false
+    alias(libs.plugins.kotlin.plugin.spring) apply false
+    alias(libs.plugins.kotlin.ktlint) apply false
+    alias(libs.plugins.google.jib) apply false
+
+
     alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.versions)
 }

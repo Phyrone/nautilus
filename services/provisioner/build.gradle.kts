@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.google.jib)
+    alias(libs.plugins.kotlin.ktlint)
 }
 
 repositories {

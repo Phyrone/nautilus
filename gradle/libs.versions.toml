@@ -5,6 +5,7 @@ protobuf-plugin-version = "0.9.4"
 jib-plugin-version = "3.4.3"
 versions-plugin-version = "0.51.0"
 shadow-plugin-version = "8.1.1"
+ktlint-plugin-version = "12.1.1"
 
 # Kotlin, and closely related
 ktor-version = "3.0.0"
@@ -150,6 +151,7 @@ shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow-plugin-
 
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-version" }
+kotlin-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-plugin-version" }
 kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin-version" }
 kotlin-plugin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin-version" }
 jetbrains-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka-version" }
