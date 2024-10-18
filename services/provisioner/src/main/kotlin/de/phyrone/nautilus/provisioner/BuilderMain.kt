@@ -1,6 +1,5 @@
 package de.phyrone.nautilus.provisioner
 
-import org.eclipse.jgit.api.Git
 import picocli.CommandLine
 import picocli.CommandLine.Command
 import picocli.CommandLine.Option
@@ -13,11 +12,10 @@ import kotlin.system.exitProcess
     mixinStandardHelpOptions = true,
 )
 class BuilderMain : Callable<Int> {
-
     @Option(
         names = ["-d", "--data-dir"],
         description = ["The directory where the data is stored"],
-        required = false
+        required = false,
     )
     var dataDir: File? = null
 
@@ -41,16 +39,12 @@ class BuilderMain : Callable<Int> {
         /**
          * Clear the local repository and clone the remote repository again
          */
-        FRESH
+        FRESH,
     }
-
 
     override fun call(): Int {
-
-
         return 0
     }
-
 
     companion object Main {
         @JvmStatic
@@ -60,6 +54,4 @@ class BuilderMain : Callable<Int> {
             exitProcess(commandLine.execute(*args))
         }
     }
-
-
 }

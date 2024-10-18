@@ -18,15 +18,12 @@ dependencies {
     implementation(libs.bundles.kotlin.stdlib)
     implementation(libs.bundles.kotlin.coroutines)
 
-
     implementation("info.picocli:picocli:4.7.6")
     kapt("info.picocli:picocli-codegen:4.7.6")
-
 
     implementation(libs.bundles.jackson)
 
     implementation(libs.guava)
-
 
     implementation(libs.jib)
     implementation(libs.jgit)
@@ -37,7 +34,6 @@ dependencies {
 
     implementation("com.sksamuel.aedile:aedile-core:1.3.1")
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
-
 }
 
 kotlin {
