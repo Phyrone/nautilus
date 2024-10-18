@@ -1,23 +1,23 @@
 plugins {
-    kotlin("jvm")
-    id("org.jetbrains.dokka")
-    id("com.github.johnrengelman.shadow")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.jetbrains.dokka)
+    alias(libs.plugins.shadow)
 }
 
-dependencies{
+dependencies {
     implementation(project(":agent:paper"))
     implementation(project(":agent:velocity"))
 }
 
-tasks{
-    jar{
+tasks {
+    jar {
         archiveClassifier.set("no-dependencies")
     }
-    shadowJar{
+    shadowJar {
         enabled = true
         archiveClassifier.set("")
     }
-    build{
+    build {
         dependsOn(shadowJar)
     }
 }
