@@ -2,7 +2,7 @@ on:
   push: { }
 name: Build
 jobs:
-  build_agent:
+  build_java:
     name: Build Java
     runs-on: ubuntu-latest
     steps:
@@ -21,21 +21,3 @@ jobs:
         run: ./gradlew build
       - name: Test
         run: ./gradlew test
-  build_operator:
-    name: Build Rust
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-      - name: Setup Protoc
-        uses: arduino/setup-protoc@v3
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-      - name: Cargo Cache
-        uses: Swatinem/rust-cache@v2
-      - name: Cargo Build
-        run: cargo build
-      - name: Cargo Test
-        run: cargo test

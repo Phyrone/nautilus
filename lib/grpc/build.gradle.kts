@@ -2,9 +2,9 @@ import com.google.protobuf.gradle.proto
 
 plugins {
     idea
-    kotlin("jvm")
-    id("com.google.protobuf")
-    id("org.jetbrains.dokka")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.jetbrains.dokka)
+    alias(libs.plugins.google.protobuf)
 }
 
 repositories {
@@ -12,14 +12,10 @@ repositories {
 }
 
 dependencies {
-    implementation("io.grpc:grpc-netty-shaded:1.68.0")
-    implementation("io.grpc:grpc-protobuf:1.68.0")
-    implementation("io.grpc:grpc-stub:1.68.0")
-    implementation("io.grpc:grpc-kotlin-stub:1.4.1")
+    implementation(libs.bundles.kotlin.stdlib)
+    implementation(libs.bundles.kotlin.coroutines)
 
-    implementation("com.google.protobuf:protobuf-kotlin:4.28.2")
-    implementation("com.google.protobuf:protobuf-java-util:4.28.2")
-
+    implementation(libs.bundles.grpc)
 
 
 }
@@ -35,13 +31,16 @@ sourceSets {
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:4.28.2"
+        //artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.version}"
     }
     plugins {
         create("grpc") {
             artifact = "io.grpc:protoc-gen-grpc-java:1.68.0"
+            //artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.version}"
         }
         create("grpckt") {
             artifact = "io.grpc:protoc-gen-grpc-kotlin:1.4.1:jdk8@jar"
+            //artifact = "io.grpc:protoc-gen-grpc-kotlin:${libs.versions.grpc.kotlin.version}:jdk8@jar"
         }
     }
 
