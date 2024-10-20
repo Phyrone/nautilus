@@ -1,0 +1,178 @@
+[versions]
+
+# Gradle Plugins
+protobuf-plugin-version = "0.9.4"
+jib-plugin-version = "3.4.3"
+versions-plugin-version = "0.51.0"
+shadow-plugin-version = "8.1.1"
+ktlint-plugin-version = "12.1.1"
+
+# Kotlin, and closely related
+ktor-version = "3.0.0"
+kotlin-version = "2.0.21"
+dokka-version = "1.9.20"
+coroutines-version = "1.9.0"
+ksp-version = "2.0.21-1.0.25"
+
+# Libraries
+jgit-version = "7.0.0.202409031743-r"
+jackson-version = "2.18.0"
+slf4j-version = "2.0.16"
+logback-version = "1.5.10"
+guava-version = "33.3.1-jre"
+bouncycastle-version = "1.78.1"
+jib-version = "0.27.1"
+kubernetes-client-version = "6.13.4"
+koin-version = "4.0.0"
+koin-annotations-version = "2.0.0-Beta1"
+
+# Protobuf (except gradle plugin)
+protobuf-version = "4.28.2"
+grpc-version = "1.68.0"
+grpc-kotlin-version = "1.4.1"
+
+#flaxoos-extra-plugins-version = "1.2.10"
+
+[libraries]
+
+# Kotlin
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin-version" }
+kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-version" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-version" }
+
+# Kotlin Coroutines
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines-version" }
+kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutines-version" }
+kotlinx-coroutines-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "coroutines-version" }
+
+# Ktor Server
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor-version" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor-version" }
+
+# Ktor Server Task Scheduling
+#ktor-server-task-scheduling-core = { module = "io.github.flaxoos:ktor-server-task-scheduling-core-jvm", version.ref = "flaxoos-extra-plugins-version" }
+#ktor-server-task-scheduling-redis = { module = "io.github.flaxoos:ktor-server-task-scheduling-redis-jvm", version.ref = "flaxoos-extra-plugins-version" }
+#ktor-server-task-scheduling-mongodb = { module = "io.github.flaxoos:ktor-server-task-scheduling-mongodb-jvm", version.ref = "flaxoos-extra-plugins-version" }
+#ktor-server-task-scheduling-jdbc = { module = "io.github.flaxoos:ktor-server-task-scheduling-jdbc-jvm", version.ref = "flaxoos-extra-plugins-version" }
+
+# Jackson
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-version" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-version" }
+jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
+jackson-dataformat-toml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-toml", version.ref = "jackson-version" }
+jackon-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
+
+# Koin
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin-version" }
+koin-core-coroutines = { module = "io.insert-koin:koin-core-coroutines", version.ref = "koin-version" }
+
+koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations-version" }
+koin-annotations-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations-version" }
+
+
+# Protobuf and gRPC
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf-version" }
+protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf-version" }
+protobuf-java-util = { module = "com.google.protobuf:protobuf-java-util", version.ref = "protobuf-version" }
+
+
+grpc-core = { module = "io.grpc:grpc-core", version.ref = "grpc-version" }
+grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc-version" }
+grpc-stub-kotlin = { module = "io.grpc:grpc-kotlin-stub", version.ref = "grpc-kotlin-version" }
+grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc-version" }
+grpc-netty = { module = "io.grpc:grpc-netty-shaded", version.ref = "grpc-version" }
+
+
+# Guava
+guava = { module = "com.google.guava:guava", version.ref = "guava-version" }
+
+# Bouncy Castle
+bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle-version" }
+bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle-version" }
+
+# Kubernetes Client
+k8s-client = { module = "io.fabric8:kubernetes-client", version.ref = "kubernetes-client-version" }
+k8s-crds-annotations = { module = "io.fabric8:generator-annotations", version.ref = "kubernetes-client-version" }
+k8s-crds-generator = { module = "io.fabric8:crd-generator-apt", version.ref = "kubernetes-client-version" }
+
+# JGit
+jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit-version" }
+
+# Jib
+jib = { module = "com.google.cloud.tools:jib-core", version.ref = "jib-version" }
+
+# Logging
+slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-version" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }
+
+
+[bundles]
+
+grpc = [
+    "protobuf-kotlin",
+    "protobuf-java",
+    "protobuf-java-util",
+    "grpc-core",
+    "grpc-stub",
+    "grpc-stub-kotlin",
+    "grpc-protobuf",
+    "grpc-netty",
+]
+
+kotlin-stdlib = [
+    "kotlin-stdlib",
+    "kotlin-stdlib-jdk8",
+    "kotlin-reflect",
+]
+
+kotlin-coroutines = [
+    "kotlinx-coroutines-core",
+    "kotlinx-coroutines-jdk8",
+    "kotlinx-coroutines-reactive",
+]
+
+koin = [
+    "koin-core",
+    "koin-core-coroutines",
+    "koin-annotations"
+]
+
+jackson = [
+    "jackson-core",
+    "jackson-databind",
+    "jackson-annotations",
+    "jackson-dataformat-yaml",
+    "jackson-dataformat-toml",
+    "jackon-module-kotlin",
+]
+bouncycastle = [
+    "bouncycastle-bcprov",
+    "bouncycastle-bcpkix",
+]
+
+logging = [
+    "slf4j",
+    "logback-classic",
+]
+
+ktor-server = [
+    "ktor-server-core",
+    "ktor-server-netty",
+]
+
+[plugins]
+
+versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugin-version" }
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow-plugin-version" }
+
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-version" }
+kotlin-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-plugin-version" }
+kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin-version" }
+kotlin-plugin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin-version" }
+jetbrains-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka-version" }
+google-jib = { id = "com.google.cloud.tools.jib", version.ref = "jib-plugin-version" }
+google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin-version" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
+

@@ -1,16 +1,18 @@
 plugins {
     idea
     base
-    kotlin("jvm") version "2.0.21" apply false
-    kotlin("kapt") version "2.0.21" apply false
 
-    id("org.jetbrains.dokka") version "1.9.20"
-    id("com.github.ben-manes.versions") version "0.51.0"
-    //id("kr.entree.spigradle") version "2.4.3" apply false
-    id("com.github.johnrengelman.shadow") version "8.1.1" apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.kotlin.plugin.noarg) apply false
+    alias(libs.plugins.kotlin.plugin.spring) apply false
+    alias(libs.plugins.google.jib) apply false
 
-    id("com.google.protobuf") version "0.9.4" apply false
+    alias(libs.plugins.jetbrains.dokka)
+    alias(libs.plugins.versions)
+    alias(libs.plugins.kotlin.ktlint)
 }
+
 version = "0.0.1-SNAPSHOT"
 group = "de.phyrone"
 
@@ -41,5 +43,11 @@ tasks {
     clean {
         this.setDelete(projectDir.resolve("build"))
         this.setDelete(projectDir.resolve("target"))
+    }
+}
+idea {
+    module {
+        isDownloadJavadoc = true
+        isDownloadSources = true
     }
 }
