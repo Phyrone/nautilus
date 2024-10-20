@@ -12,6 +12,7 @@ ktor-version = "3.0.0"
 kotlin-version = "2.0.21"
 dokka-version = "1.9.20"
 coroutines-version = "1.9.0"
+ksp-version = "2.0.21-1.0.25"
 
 # Libraries
 jgit-version = "7.0.0.202409031743-r"
@@ -22,6 +23,8 @@ guava-version = "33.3.1-jre"
 bouncycastle-version = "1.78.1"
 jib-version = "0.27.1"
 kubernetes-client-version = "6.13.4"
+koin-version = "4.0.0"
+koin-annotations-version = "2.0.0-Beta1"
 
 # Protobuf (except gradle plugin)
 protobuf-version = "4.28.2"
@@ -59,6 +62,14 @@ jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations
 jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
 jackson-dataformat-toml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-toml", version.ref = "jackson-version" }
 jackon-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
+
+# Koin
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin-version" }
+koin-core-coroutines = { module = "io.insert-koin:koin-core-coroutines", version.ref = "koin-version" }
+
+koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations-version" }
+koin-annotations-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations-version" }
+
 
 # Protobuf and gRPC
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf-version" }
@@ -121,6 +132,12 @@ kotlin-coroutines = [
     "kotlinx-coroutines-reactive",
 ]
 
+koin = [
+    "koin-core",
+    "koin-core-coroutines",
+    "koin-annotations"
+]
+
 jackson = [
     "jackson-core",
     "jackson-databind",
@@ -157,4 +174,5 @@ kotlin-plugin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = 
 jetbrains-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka-version" }
 google-jib = { id = "com.google.cloud.tools.jib", version.ref = "jib-plugin-version" }
 google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin-version" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
 

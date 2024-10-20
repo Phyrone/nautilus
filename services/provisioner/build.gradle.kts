@@ -22,6 +22,7 @@ dependencies {
     kapt("info.picocli:picocli-codegen:4.7.6")
 
     implementation(libs.bundles.jackson)
+    implementation(libs.bundles.koin)
 
     implementation(libs.guava)
 

@@ -25,4 +25,4 @@ project(":lib:shared").projectDir = rootProject.projectDir.resolve("lib/shared")
 
 project(":provisioner").projectDir = rootProject.projectDir.resolve("services/provisioner")
 project(":operator").projectDir = rootProject.projectDir.resolve("services/operator")
-//project(":template-controller").projectDir = rootProject.projectDir.resolve("services/template-controller")
+// project(":template-controller").projectDir = rootProject.projectDir.resolve("services/template-controller")
