@@ -6,6 +6,7 @@ include(
     "agent:common",
     "agent:paper",
     "agent:velocity",
+    "agent:bungee",
     "lib:grpc",
     "lib:crds",
     "lib:shared",
@@ -18,6 +19,7 @@ project(":agent").projectDir = rootProject.projectDir.resolve("services/agent")
 project(":agent:shared").projectDir = rootProject.projectDir.resolve("services/agent/shared")
 project(":agent:paper").projectDir = rootProject.projectDir.resolve("services/agent/paper")
 project(":agent:velocity").projectDir = rootProject.projectDir.resolve("services/agent/velocity")
+project(":agent:bungee").projectDir = rootProject.projectDir.resolve("services/agent/bungee")
 
 project(":lib:grpc").projectDir = rootProject.projectDir.resolve("lib/grpc")
 project(":lib:crds").projectDir = rootProject.projectDir.resolve("lib/crds")

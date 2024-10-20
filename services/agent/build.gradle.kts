@@ -7,6 +7,7 @@ plugins {
 dependencies {
     implementation(project(":agent:paper"))
     implementation(project(":agent:velocity"))
+    implementation(project(":agent:bungee"))
 }
 
 tasks {
