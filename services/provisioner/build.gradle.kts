@@ -18,8 +18,7 @@ dependencies {
     implementation(libs.bundles.kotlin.stdlib)
     implementation(libs.bundles.kotlin.coroutines)
 
-    implementation("info.picocli:picocli:4.7.6")
-    kapt("info.picocli:picocli-codegen:4.7.6")
+    implementation(libs.picocli)
 
     implementation(libs.bundles.jackson)
     implementation(libs.bundles.koin)
