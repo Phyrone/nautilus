@@ -26,6 +26,7 @@ kubernetes-client-version = "6.13.4"
 koin-version = "4.0.0"
 koin-annotations-version = "2.0.0-Beta1"
 mccoroutines-version = "2.20.0"
+picocli-version = "4.7.6"
 
 # Protobuf (except gradle plugin)
 protobuf-version = "4.28.2"
@@ -106,6 +107,10 @@ jib = { module = "com.google.cloud.tools:jib-core", version.ref = "jib-version" 
 # Logging
 slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-version" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }
+
+# Picocli
+picocli = { module = "info.picocli:picocli", version.ref = "picocli-version" }
+picocli-codegen = { module = "info.picocli:picocli-codegen", version.ref = "picocli-version" }
 
 # Mcoroutines
 mccoroutines-folia-api = { module = "com.github.shynixn.mccoroutine:mccoroutine-folia-api", version.ref = "mccoroutines-version" }
