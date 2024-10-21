@@ -8,7 +8,7 @@ shadow-plugin-version = "8.1.1"
 ktlint-plugin-version = "12.1.1"
 
 # Kotlin, and closely related
-ktor-version = "3.0.0"
+ktor = "3.0.0"
 kotlin-version = "2.0.21"
 dokka-version = "1.9.20"
 coroutines-version = "1.9.0"
@@ -47,9 +47,21 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutines-version" }
 kotlinx-coroutines-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "coroutines-version" }
 
+# Ktor
+ktor-serialization-jackson = { module = "io.ktor:ktor-serialization-jackson", version.ref = "ktor" }
+
 # Ktor Server
-ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor-version" }
-ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor-version" }
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
+
+# Ktor Client
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-encoding = { module = "io.ktor:ktor-client-encoding", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-bom-remover = { module = "io.ktor:ktor-client-bom-remover", version.ref = "ktor" }
+
 
 # Ktor Server Task Scheduling
 #ktor-server-task-scheduling-core = { module = "io.github.flaxoos:ktor-server-task-scheduling-core-jvm", version.ref = "flaxoos-extra-plugins-version" }
@@ -177,6 +189,16 @@ logging = [
 ktor-server = [
     "ktor-server-core",
     "ktor-server-netty",
+]
+
+ktor-client = [
+    "ktor-serialization-jackson",
+    "ktor-client-core",
+    "ktor-client-okhttp",
+    "ktor-content-negotiation",
+    "ktor-client-encoding",
+    "ktor-client-logging",
+    "ktor-client-bom-remover"
 ]
 
 mcroutines-folia = [

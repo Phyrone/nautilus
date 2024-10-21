@@ -17,25 +17,35 @@ dependencies {
     implementation(libs.bundles.logging)
     implementation(libs.bundles.kotlin.stdlib)
     implementation(libs.bundles.kotlin.coroutines)
-
     implementation(libs.picocli)
-
     implementation(libs.bundles.jackson)
     implementation(libs.bundles.koin)
-
-    implementation(libs.guava)
-
-    implementation(libs.jib)
-    implementation(libs.jgit)
-
-    implementation("me.tongfei:progressbar:0.10.1")
-
-    implementation(libs.k8s.client)
-
-    implementation("com.sksamuel.aedile:aedile-core:1.3.1")
-    implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
 }
 
 kotlin {
     jvmToolchain(21)
+}
+
+application {
+    mainClass.set("de.phyrone.nautilus.provisioner.ProvisionerMain")
+}
+jib {
+    from {
+        image = "eclipse-temurin:22-jdk"
+        platforms {
+            platform {
+                os = "linux"
+                architecture = "amd64"
+            }
+            platform {
+                os = "linux"
+                architecture = "arm64"
+            }
+        }
+    }
+
+    this.container {
+        this.appRoot = "/app"
+        this.workingDirectory = "/data"
+    }
 }
