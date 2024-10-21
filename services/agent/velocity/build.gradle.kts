@@ -1,7 +1,7 @@
 plugins {
-    kotlin("jvm")
-    kotlin("kapt")
-    id("org.jetbrains.dokka")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.jetbrains.dokka)
 }
 
 
@@ -16,9 +16,7 @@ dependencies {
     kapt("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-velocity-api:2.20.0")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-velocity-core:2.20.0")
+    implementation(libs.bundles.mcroutines.velocity)
 
 }
 kotlin {

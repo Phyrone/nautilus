@@ -1,4 +1,4 @@
-name: ProjectSteve
+name: NautilusAgent
 version: 1.0.0
 api-version: 1.18.1
-main: de.phyrone.steve.agent.paper.PluginMain
+main: de.phyrone.nautilus.agent.paper.PaperPluginMain

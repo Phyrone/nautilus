@@ -7,7 +7,7 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.plugin.Plugin
 
 @Plugin(
-    id = "nautilus-cloud",
+    id = "nautilus-agent",
     name = "Nautilus Cloud Agent",
 )
 class VelocityMain @Inject constructor(suspendingPluginContainer: SuspendingPluginContainer) {

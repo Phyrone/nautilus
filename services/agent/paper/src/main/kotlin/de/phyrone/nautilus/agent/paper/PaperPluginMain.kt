@@ -3,7 +3,7 @@ package de.phyrone.nautilus.agent.paper
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
 
 
-class PluginMain : SuspendingJavaPlugin() {
+class PaperPluginMain : SuspendingJavaPlugin() {
     override suspend fun onEnableAsync() {
 
     }

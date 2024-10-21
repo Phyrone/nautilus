@@ -1,12 +1,11 @@
 plugins {
-    kotlin("jvm")
-    id("org.jetbrains.dokka")
-    id("com.github.johnrengelman.shadow")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.jetbrains.dokka)
+    alias(libs.plugins.shadow)
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(libs.bundles.kotlin.stdlib)
     implementation(kotlin("reflect"))
     implementation(project(":lib:grpc"))
 

@@ -25,6 +25,7 @@ jib-version = "0.27.1"
 kubernetes-client-version = "6.13.4"
 koin-version = "4.0.0"
 koin-annotations-version = "2.0.0-Beta1"
+mccoroutines-version = "2.20.0"
 
 # Protobuf (except gradle plugin)
 protobuf-version = "4.28.2"
@@ -106,6 +107,18 @@ jib = { module = "com.google.cloud.tools:jib-core", version.ref = "jib-version" 
 slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-version" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }
 
+# Mcoroutines
+mccoroutines-folia-api = { module = "com.github.shynixn.mccoroutine:mccoroutine-folia-api", version.ref = "mccoroutines-version" }
+mccoroutines-folia-core = { module = "com.github.shynixn.mccoroutine:mccoroutine-folia-core", version.ref = "mccoroutines-version" }
+
+mccoroutines-velocity-api = { module = "com.github.shynixn.mccoroutine:mccoroutine-velocity-api", version.ref = "mccoroutines-version" }
+mccoroutines-velocity-core = { module = "com.github.shynixn.mccoroutine:mccoroutine-velocity-core", version.ref = "mccoroutines-version" }
+
+mccoroutines-bungee-api = { module = "com.github.shynixn.mccoroutine:mccoroutine-bungeecord-api", version.ref = "mccoroutines-version" }
+mccoroutines-bungee-core = { module = "com.github.shynixn.mccoroutine:mccoroutine-bungeecord-core", version.ref = "mccoroutines-version" }
+
+
+
 
 [bundles]
 
@@ -159,6 +172,27 @@ logging = [
 ktor-server = [
     "ktor-server-core",
     "ktor-server-netty",
+]
+
+mcroutines-folia = [
+    "kotlinx-coroutines-core",
+    "kotlinx-coroutines-jdk8",
+    "mccoroutines-folia-api",
+    "mccoroutines-folia-core",
+]
+
+mcroutines-velocity = [
+    "kotlinx-coroutines-core",
+    "kotlinx-coroutines-jdk8",
+    "mccoroutines-velocity-api",
+    "mccoroutines-velocity-core",
+]
+
+mcroutines-bungee = [
+    "kotlinx-coroutines-core",
+    "kotlinx-coroutines-jdk8",
+    "mccoroutines-bungee-api",
+    "mccoroutines-bungee-core",
 ]
 
 [plugins]
