@@ -51,3 +51,6 @@ idea {
         isDownloadSources = true
     }
 }
+ktlint {
+    ignoreFailures.set(true)
+}

@@ -1,0 +1,10 @@
+apiVersion: nautilus.phyrone.de/v1alpha1
+kind: MinecraftService
+metadata:
+  name: lobby
+  namespace: mcnet
+spec:
+  template:
+    ref:
+      name: lobby
+  replicas: 10

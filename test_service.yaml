@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lobby
+  namespace: mcnet
+  ownerReferences:
+    - apiVersion: nautilus.phyrone.de/v1alpha1
+      kind: MinecraftService
+      name: lobby
+      uid: 7d03c259-14bc-4c17-8f60-a50883390fee
+spec:
+
+  containers:
+    - name: minecraft
+      image: itzg/minecraft-server
+      ports:
+        - containerPort: 25565
+      env:
+        - name: EULA
+          value: "true"
+      readinessProbe:
+        exec:
+

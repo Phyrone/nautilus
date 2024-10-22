@@ -17,3 +17,6 @@ inline infix fun <reified T : Any> T.merge(other: T): T {
     }
     return primaryConstructor.callBy(args)
 }
+
+fun unreachable(): Nothing = throw IllegalStateException("This should never be reached")
+fun unsupported(): Nothing = throw UnsupportedOperationException()
