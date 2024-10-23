@@ -22,9 +22,8 @@ class OperatorApplication : Callable<Int> {
             module {
                 includes(k8sModule, appCommonsModule)
 
-                /* Operator Subsystems */
-                single { MinecraftServiceReconcileSubSystem() } bind Subsystem::class
-                single { LeaderElectionSubsystem() } bind Subsystem::class
+                // Operator Subsystems
+                single { MinecraftServersSubsystem() } bind Subsystem::class
             }
 
         @JvmStatic

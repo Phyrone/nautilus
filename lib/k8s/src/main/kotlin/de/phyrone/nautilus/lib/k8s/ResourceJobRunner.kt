@@ -12,7 +12,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class ResourceDeletedException(
-    val resource: HasMetadata
+    val resource: HasMetadata,
 ) : CancellationException()
 
 /**
@@ -22,9 +22,9 @@ class ResourceDeletedException(
  * A job that completes before the resource is deleted will restart when the resource is modified.
  * The job will be canceled when the resource is deleted.
  */
-suspend fun <T : HasMetadata> runResourceJobs(
+suspend fun <T : HasMetadata> runResourceWatchers(
     watchable: Watchable<T>,
-    block: suspend ResourceJobScope<T>.() -> Unit,
+    block: suspend ResourceJobScope<T>.(StateFlow<T>) -> Unit,
 ) {
     class ResourceJobScopeImpl(
         initial: T,
@@ -33,7 +33,7 @@ suspend fun <T : HasMetadata> runResourceJobs(
         override val namespace: String = initial.metadata.namespace
 
         val stateFlowMut = MutableStateFlow(initial)
-        override val resource: StateFlow<T> = stateFlowMut.asStateFlow()
+        val resource: StateFlow<T> = stateFlowMut.asStateFlow()
     }
 
     class ResourceJob<T : HasMetadata>(
@@ -51,13 +51,14 @@ suspend fun <T : HasMetadata> runResourceJobs(
                             val activeJob = jobs[resource.metadata.uid]
                             if (activeJob == null) {
                                 val scope = ResourceJobScopeImpl(resource)
-                                val job = launch {
-                                    try {
-                                        block(scope)
-                                    } finally {
-                                        jobsLock.withLock { jobs.remove(resource.metadata.uid) }
+                                val job =
+                                    launch {
+                                        try {
+                                            block(scope, scope.resource)
+                                        } finally {
+                                            jobsLock.withLock { jobs.remove(resource.metadata.uid) }
+                                        }
                                     }
-                                }
                                 jobs[resource.metadata.uid] = ResourceJob(job, scope)
                             } else {
                                 activeJob.scope.stateFlowMut.value = resource

@@ -68,13 +68,11 @@ const val VALUE_PART_OF_MINECRAFT = "minecraft"
  */
 const val VALUE_NAUTILUS_SERVICE_CLASS_SERVER = "minecraft-service"
 
-
 const val ANNOTATION_POD_DELETION_COST = "controller.kubernetes.io/pod-deletion-cost"
 const val ANNOTATION_DEFAULT_CONTAINER = "kubectl.kubernetes.io/default-container"
 
-
-val DEFAULT_NAUTILUS_LABELS = mapOf(
-    LABEL_K8S_MANAGED_BY to VALUE_MANAGED_BY_NAUTILUS,
-    LABEL_K8S_PART_OF to VALUE_PART_OF_MINECRAFT
-
-)
+val DEFAULT_NAUTILUS_LABELS =
+    mapOf(
+        LABEL_K8S_MANAGED_BY to VALUE_MANAGED_BY_NAUTILUS,
+        LABEL_K8S_PART_OF to VALUE_PART_OF_MINECRAFT,
+    )

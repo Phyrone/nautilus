@@ -2,6 +2,7 @@ package de.phyrone.nautilus.appcommons
 
 import kotlinx.coroutines.*
 import org.koin.core.Koin
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -36,5 +37,5 @@ val appCommonsModule = module {
             }
         }
     }
-    single { UUID.randomUUID() }
+    single(named<AppID>()) { UUID.randomUUID().toString() }
 }
