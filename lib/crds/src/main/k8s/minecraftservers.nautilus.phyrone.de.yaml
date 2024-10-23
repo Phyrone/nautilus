@@ -19,18 +19,56 @@ spec:
         description: Auto-generated derived type for MinecraftServerV1Alpha1Spec via `CustomResource`
         properties:
           spec:
-            anyOf:
-            - required:
-              - image
-            - required:
-              - template
             properties:
               image:
+                description: The base image to use for the server By default, itzg/minecraft-server is used. This does not affect the provisioner service.
+                nullable: true
                 type: string
+              install:
+                nullable: true
+                properties:
+                  plugins:
+                    items:
+                      type: string
+                    nullable: true
+                    type: array
+                  software:
+                    anyOf:
+                    - required:
+                      - paper
+                    - required:
+                      - purpur
+                    - required:
+                      - folia
+                    nullable: true
+                    properties:
+                      folia:
+                        description: |-
+                          Install Folia with the given version or latest.
+
+                          Folia is a fork of Paper with regionized multithreading. WARNING: all plugins need to have explicit support for Folia to work. Folia makes most sense for large servers with many spread out players. Find more information at [PaperMC](https://papermc.io/software/folia).
+                        type: string
+                      paper:
+                        description: |-
+                          Install PaperMC with the given version or latest.
+
+                          Papermc is an optimized minecraft server based on Bukkit/Spigot. It implements the Bukkit plugin api and has a lot of fancy built-in features. Find more information at [PaperMC](https://papermc.io/software/paper).
+                        type: string
+                      purpur:
+                        description: |-
+                          Install Purpur with the given version or latest.
+
+                          Purpur is a fork of Paper (more exact Pufferfish) with additional features and optimizations. Most significantly, it makes a lot more mechanics configurable. It also add some nice commands like (/tpsbar, /rambar and more).
+
+                          Find more information at [PurpurMC](https://purpurmc.org/).
+                        type: string
+                    type: object
+                type: object
               persistence:
                 nullable: true
                 properties:
                   enabled:
+                    description: Enable persistence for the server. Data will be stored in a persistent volume. The server will be handled as stateful set instead of deployment.
                     nullable: true
                     type: boolean
                   size:
@@ -46,9 +84,38 @@ spec:
                 nullable: true
                 type: integer
               template:
+                nullable: true
+                oneOf:
+                - required:
+                  - ref
+                - required:
+                  - git
                 properties:
+                  git:
+                    description: |-
+                      Use a git repository as the template.
+
+                      The repository will be checked out at every server start. Fast-forward will be used if possible. Shallow clone is used if not cloned before.
+                    properties:
+                      branch:
+                        description: The branch to check out. If not set, the default branch is used.
+                        nullable: true
+                        type: string
+                      path:
+                        description: A subdirectory which contains the files.
+                        nullable: true
+                        type: string
+                      repository:
+                        description: |-
+                          The url to the git repository to check out.
+
+                          This can be any valid git url implemented in JGit (which should be equal to original git).
+                        type: string
+                    required:
+                    - repository
+                    type: object
                   ref:
-                    description: ObjectReference contains enough information to let you inspect or modify the referred object.
+                    description: NOT IMPLEMENTED YET
                     properties:
                       apiVersion:
                         description: API version of the referent.
@@ -72,8 +139,6 @@ spec:
                         description: 'UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids'
                         type: string
                     type: object
-                required:
-                - ref
                 type: object
             type: object
           status:
@@ -81,7 +146,7 @@ spec:
             type: object
         required:
         - spec
-        title: MinecraftServiceV1Alpha1
+        title: MinecraftServerV1Alpha1
         type: object
     served: true
     storage: true

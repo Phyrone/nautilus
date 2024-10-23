@@ -2,7 +2,7 @@ use k8s_openapi::apiextensions_apiserver::pkg::apis::apiextensions::v1::CustomRe
 use kube::core::crd::merge_crds;
 use kube::CustomResourceExt;
 
-pub mod minecraft_server;
+mod minecraft_server;
 mod template;
 
 
@@ -11,7 +11,7 @@ pub fn all() -> Vec<CustomResourceDefinition> {
 
 
     let minecraft_service = merge_crds(
-        vec![minecraft_server::MinecraftServiceV1Alpha1::crd()],
+        vec![minecraft_server::MinecraftServerV1Alpha1::crd()],
         PRIMARY_VERSION,
     ).expect("Failed to merge MinecraftService CRDs");
     let template = merge_crds(

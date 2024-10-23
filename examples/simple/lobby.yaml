@@ -3,6 +3,10 @@ kind: MinecraftServer
 metadata:
   name: lobby
 spec:
-  replicas: 0
+  replicas: 4
+  install:
+    software:
+      # Install the latest version of purpur (a paper fork)
+      purpur: "latest"
   persistence:
-    enabled: true
+    enabled: false
