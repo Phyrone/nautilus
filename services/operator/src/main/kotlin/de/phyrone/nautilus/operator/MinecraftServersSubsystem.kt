@@ -4,7 +4,7 @@ import de.phyrone.nautilus.appcommons.AppID
 import de.phyrone.nautilus.appcommons.Subsystem
 import de.phyrone.nautilus.k8s.crds.v1alpha1.MinecraftServer
 import de.phyrone.nautilus.lib.k8s.*
-import de.phyrone.nautilus.operator.resources.minecraftService
+import de.phyrone.nautilus.operator.resources.minecraftServer
 import io.fabric8.kubernetes.api.model.Service
 import io.fabric8.kubernetes.api.model.apps.Deployment
 import io.fabric8.kubernetes.api.model.apps.StatefulSet
@@ -105,7 +105,7 @@ class MinecraftServersSubsystem : Subsystem {
                         .get()
                 } ?: Service()
             ).edit()
-                .minecraftService(minecraftServer)
+                .minecraftServer(minecraftServer)
                 .editMetadata()
                 .withManagedFields()
                 .endMetadata()
@@ -130,7 +130,7 @@ class MinecraftServersSubsystem : Subsystem {
                             .get()
                     } ?: StatefulSet()
                 ).edit()
-                    .minecraftService(minecraftServer)
+                    .minecraftServer(minecraftServer)
                     .editMetadata()
                     .withManagedFields()
                     .endMetadata()
@@ -152,7 +152,7 @@ class MinecraftServersSubsystem : Subsystem {
                             .get()
                     } ?: Deployment()
                 ).edit()
-                    .minecraftService(minecraftServer)
+                    .minecraftServer(minecraftServer)
                     .editMetadata()
                     .withManagedFields()
                     .endMetadata()
