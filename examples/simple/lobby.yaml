@@ -3,10 +3,22 @@ kind: MinecraftServer
 metadata:
   name: lobby
 spec:
-  replicas: 4
+  replicas: 2
+  resources:
+    memory:
+      maxHeap: 2G
   install:
     software:
       # Install the latest version of purpur (a paper fork)
       purpur: "latest"
+    spigot:
+      # LuckPerms (a feature-rich permissions plugin)
+      - 28140
+      # PlaceholderAPI (a plugin to use placeholders in other plugins)
+      - 6245
+    modrinth:
+      # ViaVersion, ViaBackwards (a plugin to support multiple client versions)
+      - viaversion
+      - viabackwards
   persistence:
     enabled: false

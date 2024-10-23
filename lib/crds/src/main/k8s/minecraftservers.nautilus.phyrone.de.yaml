@@ -20,6 +20,24 @@ spec:
         properties:
           spec:
             properties:
+              deploymentStrategy:
+                description: DeploymentStrategy describes how to replace existing pods with new ones.
+                nullable: true
+                properties:
+                  rollingUpdate:
+                    description: Rolling update config params. Present only if DeploymentStrategyType = RollingUpdate.
+                    properties:
+                      maxSurge:
+                        description: 'The maximum number of pods that can be scheduled above the desired number of pods. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). This can not be 0 if MaxUnavailable is 0. Absolute number is calculated from percentage by rounding up. Defaults to 25%. Example: when this is set to 30%, the new ReplicaSet can be scaled up immediately when the rolling update starts, such that the total number of old and new pods do not exceed 130% of desired pods. Once old pods have been killed, new ReplicaSet can be scaled up further, ensuring that total number of pods running at any time during the update is at most 130% of desired pods.'
+                        x-kubernetes-int-or-string: true
+                      maxUnavailable:
+                        description: 'The maximum number of pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). Absolute number is calculated from percentage by rounding down. This can not be 0 if MaxSurge is 0. Defaults to 25%. Example: when this is set to 30%, the old ReplicaSet can be scaled down to 70% of desired pods immediately when the rolling update starts. Once new pods are ready, old ReplicaSet can be scaled down further, followed by scaling up the new ReplicaSet, ensuring that the total number of pods available at all times during the update is at least 70% of desired pods.'
+                        x-kubernetes-int-or-string: true
+                    type: object
+                  type:
+                    description: Type of deployment. Can be "Recreate" or "RollingUpdate". Default is RollingUpdate.
+                    type: string
+                type: object
               image:
                 description: The base image to use for the server By default, itzg/minecraft-server is used. This does not affect the provisioner service.
                 nullable: true
@@ -27,7 +45,11 @@ spec:
               install:
                 nullable: true
                 properties:
-                  plugins:
+                  modrinth:
+                    description: |-
+                      A list of modrinth resources to install.
+
+                      This can be plugins, mods, datapacks, etc. Thanks to the work of itzg they will be automatically placed in the correct folder. Resources are identified by their slug or project id. Datapacks are prefixed with `datapack:`. See more at [Itzg's Minecraft Docker Image](https://docker-minecraft-server.readthedocs.io/en/latest/mods-and-plugins/modrinth/)
                     items:
                       type: string
                     nullable: true
@@ -63,6 +85,18 @@ spec:
                           Find more information at [PurpurMC](https://purpurmc.org/).
                         type: string
                     type: object
+                  spigot:
+                    description: |-
+                      A list of plugins to install.
+
+                      These are the resource ids inside spigotmc. They will be automatically placed in the plugins folder. Not all resources are downloadable as some are premium or point to external sites which might not be supported. The resource id is part of the url of the resource. f.e. `https://www.spigotmc.org/resources/luckperms.28140/` has the id `28140`.
+
+                      See more at [Itzg's Minecraft Docker Image](https://docker-minecraft-server.readthedocs.io/en/latest/mods-and-plugins/spiget/) We might extract the resource id from the url ourselves in the future.
+                    items:
+                      format: int32
+                      type: integer
+                    nullable: true
+                    type: array
                 type: object
               persistence:
                 nullable: true
@@ -83,6 +117,48 @@ spec:
                 minimum: 0.0
                 nullable: true
                 type: integer
+              resources:
+                nullable: true
+                properties:
+                  memory:
+                    nullable: true
+                    properties:
+                      enableContainerLimit:
+                        description: |-
+                          If set to true, the container memory limit will be set to the max heap size + jvm overhead. If set to false, no memory limit will be set but only the heap size.
+
+                          Default is true.
+                        nullable: true
+                        type: boolean
+                      jvmOverhead:
+                        description: |-
+                          A margin to add to the max heap size for the JVM overhead like metaspace.
+
+                          Default is 25% of the max heap size. If unsure, leave it at the default.
+                        nullable: true
+                        x-kubernetes-int-or-string: true
+                      maxHeap:
+                        description: |-
+                          The max heap size for the JVM. This is the amount of memory the JVM can use for the heap. The JVM will use more memory than this value. The exact amount depends on the JVM implementation.
+
+                          The value can be a number in bytes or a string with a unit. An empty string means no limit.
+
+                          Default is 2G.
+                        nullable: true
+                        x-kubernetes-int-or-string: true
+                      minHeap:
+                        description: |-
+                          The min heap size for the JVM. This is the amount of memory the JVM will start with. The JVM will use more memory than this value. The exact amount depends on the JVM implementation.
+
+                          The value can be a number in bytes or a string with a unit. An empty string means no limit.
+
+                          Default is the same as max heap size. (recommended)
+
+                          This also sets the requested memory for the container.
+                        nullable: true
+                        x-kubernetes-int-or-string: true
+                    type: object
+                type: object
               template:
                 nullable: true
                 oneOf:
