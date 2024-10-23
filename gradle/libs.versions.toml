@@ -29,7 +29,7 @@ mccoroutines-version = "2.20.0"
 picocli-version = "4.7.6"
 
 # Protobuf (except gradle plugin)
-protobuf-version = "4.28.2"
+protobuf-version = "4.28.3"
 grpc-version = "1.68.0"
 grpc-kotlin-version = "1.4.1"
 
