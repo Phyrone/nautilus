@@ -25,11 +25,15 @@ const val ITZG_ENV_ENABLE_AIKAR_FLAGS = "USE_AIKAR_FLAGS"
 const val ITZG_ENV_ENABLE_SIMD = "USE_SIMD_FLAGS"
 const val ITZG_ENV_ENABLE_FLARE = "USE_FLARE_FLAGS"
 const val ITZG_ENV_JVM_OPTS = "JVM_OPTS"
+const val ITZG_ENV_DEBUG_EXEC = "DEBUG_EXEC"
 
+const val ITZH_ENV_PROPS_ONLINE_MODE = "ONLINE_MODE"
+const val ITZH_ENV_PROPS_SERVER_NAME = "SERVER_NAME"
 
-const val ENV_VALUE_EXTRA_JVM_OPTS = ""//"-Djline.terminal=unix -Djline.terminal.force=true"
 
 const val PAPER_ENV_VELOCITY_SECRET = "PAPER_VELOCITY_SECRET"
+
+const val VOLUME_NAME_SERVER_DATA = "server-data"
 
 @PublishedApi
 internal fun String.isUseLatestVersion(): Boolean = this.equals("latest", ignoreCase = true) || this.isBlank()
@@ -135,8 +139,28 @@ inline fun <reified A : StatefulSetFluent<A>> A.minecraftServer(
         )
         .endSelector()
         .editOrNewTemplate()
-        .minecraftServer(minecraftService, template)
+        .minecraftServer(minecraftService, template, VOLUME_NAME_SERVER_DATA)
         .endTemplate()
+        .withVolumeClaimTemplates(
+            PersistentVolumeClaimBuilder()
+                .editOrNewMetadata()
+                .withName(VOLUME_NAME_SERVER_DATA)
+                .endMetadata()
+                .editOrNewSpec()
+                .withAccessModes("ReadWriteOnce")
+                .withStorageClassName(minecraftService.spec.persistence?.storageClass)
+                .let {
+                    val volumeSize = minecraftService.spec.persistence?.size
+                    val requests = volumeSize?.let { size ->
+                        mapOf("storage" to Quantity(size))
+                    }
+                    it.editOrNewResources()
+                        .withRequests<String, Quantity>(requests)
+                        .endResources()
+                }
+                .endSpec()
+                .build()
+        )
         .endSpec()
 
 inline fun <reified A : DeploymentFluent<A>> A.minecraftServer(
@@ -176,6 +200,7 @@ inline fun <reified A : DeploymentFluent<A>> A.minecraftServer(
 inline fun <reified A : PodTemplateSpecFluent<A>> A.minecraftServer(
     minecraftService: MinecraftServer,
     template: MinecraftTemplate? = null,
+    persistentVolumeClaim: String? = null,
 ): A =
     this
         .editOrNewMetadata()
@@ -237,12 +262,23 @@ inline fun <reified A : PodTemplateSpecFluent<A>> A.minecraftServer(
                 .withValue("true")
                 .endEnv()
                 .addNewEnv()
+                .withName(ITZH_ENV_PROPS_ONLINE_MODE)
+                .withValue("false")
+                .endEnv()
+                .addNewEnv()
+                .withName(ITZH_ENV_PROPS_SERVER_NAME)
+                .withNewValueFrom()
+                .withNewFieldRef()
+                .withFieldPath("metadata.name")
+                .endFieldRef()
+                .endValueFrom()
+                .endEnv()
+                .addNewEnv()
+                .withName(ITZG_ENV_DEBUG_EXEC)
+                .withValue("true")
+                .endEnv()
+                .addNewEnv()
                 .withName(ITZG_ENV_JVM_OPTS)
-                .withValue(
-                    ENV_VALUE_EXTRA_JVM_OPTS
-                    //TODO allow to set jvm opts
-                    //"${ENV_VALUE_EXTRA_JVM_OPTS} ${minecraftService.spec.jvmOpts ?: ""}"
-                )
                 .endEnv()
                 .addSoftwareEnv(minecraftService.spec?.install?.software)
                 // Health Checks
@@ -276,6 +312,15 @@ inline fun <reified A : PodTemplateSpecFluent<A>> A.minecraftServer(
                 )
                 .endExec()
                 .endStartupProbe()
+                //Persistent Volume Mount
+                .let {
+                    if (persistentVolumeClaim != null) {
+                        it.addNewVolumeMount()
+                            .withName(VOLUME_NAME_SERVER_DATA)
+                            .withMountPath("/data")
+                            .endVolumeMount()
+                    } else it
+                }
                 .build(),
         )
         .endSpec()
