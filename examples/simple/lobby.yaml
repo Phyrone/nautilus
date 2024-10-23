@@ -1,0 +1,8 @@
+apiVersion: nautilus.phyrone.de/v1alpha1
+kind: MinecraftServer
+metadata:
+  name: lobby
+spec:
+  replicas: 0
+  persistence:
+    enabled: true
