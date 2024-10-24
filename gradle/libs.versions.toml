@@ -12,7 +12,7 @@ ktor = "3.0.0"
 kotlin-version = "2.0.21"
 dokka-version = "1.9.20"
 coroutines-version = "1.9.0"
-ksp-version = "2.0.21-1.0.25"
+ksp-version = "2.0.21-1.0.26"
 
 # Libraries
 jgit-version = "7.0.0.202409031743-r"
@@ -21,15 +21,15 @@ slf4j-version = "2.0.16"
 logback-version = "1.5.11"
 guava-version = "33.3.1-jre"
 bouncycastle-version = "1.78.1"
-jib-version = "0.27.1"
-kubernetes-client-version = "6.13.4"
+jib-version = "0.27.2"
+kubernetes-client = "6.13.4"
 koin-version = "4.0.0"
 koin-annotations-version = "2.0.0-Beta1"
 mccoroutines-version = "2.20.0"
 picocli-version = "4.7.6"
 
 # Protobuf (except gradle plugin)
-protobuf-version = "4.28.2"
+protobuf-version = "4.28.3"
 grpc-version = "1.68.0"
 grpc-kotlin-version = "1.4.1"
 
@@ -80,6 +80,7 @@ jackon-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-k
 # Koin
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin-version" }
 koin-core-coroutines = { module = "io.insert-koin:koin-core-coroutines", version.ref = "koin-version" }
+koin-sl4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin-version" }
 
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations-version" }
 koin-annotations-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations-version" }
@@ -106,9 +107,9 @@ bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref 
 bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle-version" }
 
 # Kubernetes Client
-k8s-client = { module = "io.fabric8:kubernetes-client", version.ref = "kubernetes-client-version" }
-k8s-crds-annotations = { module = "io.fabric8:generator-annotations", version.ref = "kubernetes-client-version" }
-k8s-crds-generator = { module = "io.fabric8:crd-generator-apt", version.ref = "kubernetes-client-version" }
+k8s-client = { module = "io.fabric8:kubernetes-client", version.ref = "kubernetes-client" }
+k8s-crds-annotations = { module = "io.fabric8:generator-annotations", version.ref = "kubernetes-client" }
+k8s-crds-generator = { module = "io.fabric8:crd-generator-apt", version.ref = "kubernetes-client" }
 
 # JGit
 jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit-version" }
@@ -165,6 +166,7 @@ kotlin-coroutines = [
 koin = [
     "koin-core",
     "koin-core-coroutines",
+    "koin-sl4j",
     "koin-annotations"
 ]
 
@@ -236,4 +238,4 @@ jetbrains-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka-version" }
 google-jib = { id = "com.google.cloud.tools.jib", version.ref = "jib-plugin-version" }
 google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin-version" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
-
+fabric8-crds-generator = { id = "io.fabric8.java-generator", version.ref = "kubernetes-client" }

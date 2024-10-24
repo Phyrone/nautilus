@@ -1,0 +1,230 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: minecraftservers.nautilus.phyrone.de
+spec:
+  group: nautilus.phyrone.de
+  names:
+    categories: []
+    kind: MinecraftServer
+    plural: minecraftservers
+    shortNames: []
+    singular: minecraftserver
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns: []
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Auto-generated derived type for MinecraftServerV1Alpha1Spec via `CustomResource`
+        properties:
+          spec:
+            properties:
+              deploymentStrategy:
+                description: DeploymentStrategy describes how to replace existing pods with new ones.
+                nullable: true
+                properties:
+                  rollingUpdate:
+                    description: Rolling update config params. Present only if DeploymentStrategyType = RollingUpdate.
+                    properties:
+                      maxSurge:
+                        description: 'The maximum number of pods that can be scheduled above the desired number of pods. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). This can not be 0 if MaxUnavailable is 0. Absolute number is calculated from percentage by rounding up. Defaults to 25%. Example: when this is set to 30%, the new ReplicaSet can be scaled up immediately when the rolling update starts, such that the total number of old and new pods do not exceed 130% of desired pods. Once old pods have been killed, new ReplicaSet can be scaled up further, ensuring that total number of pods running at any time during the update is at most 130% of desired pods.'
+                        x-kubernetes-int-or-string: true
+                      maxUnavailable:
+                        description: 'The maximum number of pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). Absolute number is calculated from percentage by rounding down. This can not be 0 if MaxSurge is 0. Defaults to 25%. Example: when this is set to 30%, the old ReplicaSet can be scaled down to 70% of desired pods immediately when the rolling update starts. Once new pods are ready, old ReplicaSet can be scaled down further, followed by scaling up the new ReplicaSet, ensuring that the total number of pods available at all times during the update is at least 70% of desired pods.'
+                        x-kubernetes-int-or-string: true
+                    type: object
+                  type:
+                    description: Type of deployment. Can be "Recreate" or "RollingUpdate". Default is RollingUpdate.
+                    type: string
+                type: object
+              image:
+                description: The base image to use for the server By default, itzg/minecraft-server is used. This does not affect the provisioner service.
+                nullable: true
+                type: string
+              install:
+                nullable: true
+                properties:
+                  modrinth:
+                    description: |-
+                      A list of modrinth resources to install.
+
+                      This can be plugins, mods, datapacks, etc. Thanks to the work of itzg they will be automatically placed in the correct folder. Resources are identified by their slug or project id. Datapacks are prefixed with `datapack:`. See more at [Itzg's Minecraft Docker Image](https://docker-minecraft-server.readthedocs.io/en/latest/mods-and-plugins/modrinth/)
+                    items:
+                      type: string
+                    nullable: true
+                    type: array
+                  software:
+                    anyOf:
+                    - required:
+                      - paper
+                    - required:
+                      - purpur
+                    - required:
+                      - folia
+                    nullable: true
+                    properties:
+                      folia:
+                        description: |-
+                          Install Folia with the given version or latest.
+
+                          Folia is a fork of Paper with regionized multithreading. WARNING: all plugins need to have explicit support for Folia to work. Folia makes most sense for large servers with many spread out players. Find more information at [PaperMC](https://papermc.io/software/folia).
+                        type: string
+                      paper:
+                        description: |-
+                          Install PaperMC with the given version or latest.
+
+                          Papermc is an optimized minecraft server based on Bukkit/Spigot. It implements the Bukkit plugin api and has a lot of fancy built-in features. Find more information at [PaperMC](https://papermc.io/software/paper).
+                        type: string
+                      purpur:
+                        description: |-
+                          Install Purpur with the given version or latest.
+
+                          Purpur is a fork of Paper (more exact Pufferfish) with additional features and optimizations. Most significantly, it makes a lot more mechanics configurable. It also add some nice commands like (/tpsbar, /rambar and more).
+
+                          Find more information at [PurpurMC](https://purpurmc.org/).
+                        type: string
+                    type: object
+                  spigot:
+                    description: |-
+                      A list of plugins to install.
+
+                      These are the resource ids inside spigotmc. They will be automatically placed in the plugins folder. Not all resources are downloadable as some are premium or point to external sites which might not be supported. The resource id is part of the url of the resource. f.e. `https://www.spigotmc.org/resources/luckperms.28140/` has the id `28140`.
+
+                      See more at [Itzg's Minecraft Docker Image](https://docker-minecraft-server.readthedocs.io/en/latest/mods-and-plugins/spiget/) We might extract the resource id from the url ourselves in the future.
+                    items:
+                      format: int32
+                      type: integer
+                    nullable: true
+                    type: array
+                type: object
+              persistence:
+                nullable: true
+                properties:
+                  enabled:
+                    description: Enable persistence for the server. Data will be stored in a persistent volume. The server will be handled as stateful set instead of deployment.
+                    nullable: true
+                    type: boolean
+                  size:
+                    nullable: true
+                    type: string
+                  storageClass:
+                    nullable: true
+                    type: string
+                type: object
+              replicas:
+                format: int32
+                minimum: 0.0
+                nullable: true
+                type: integer
+              resources:
+                nullable: true
+                properties:
+                  memory:
+                    nullable: true
+                    properties:
+                      enableContainerLimit:
+                        description: |-
+                          If set to true, the container memory limit will be set to the max heap size + jvm overhead. If set to false, no memory limit will be set but only the heap size.
+
+                          Default is true.
+                        nullable: true
+                        type: boolean
+                      jvmOverhead:
+                        description: |-
+                          A margin to add to the max heap size for the JVM overhead like metaspace.
+
+                          Default is 25% of the max heap size. If unsure, leave it at the default.
+                        nullable: true
+                        x-kubernetes-int-or-string: true
+                      maxHeap:
+                        description: |-
+                          The max heap size for the JVM. This is the amount of memory the JVM can use for the heap. The JVM will use more memory than this value. The exact amount depends on the JVM implementation.
+
+                          The value can be a number in bytes or a string with a unit. An empty string means no limit.
+
+                          Default is 2G.
+                        nullable: true
+                        x-kubernetes-int-or-string: true
+                      minHeap:
+                        description: |-
+                          The min heap size for the JVM. This is the amount of memory the JVM will start with. The JVM will use more memory than this value. The exact amount depends on the JVM implementation.
+
+                          The value can be a number in bytes or a string with a unit. An empty string means no limit.
+
+                          Default is the same as max heap size. (recommended)
+
+                          This also sets the requested memory for the container.
+                        nullable: true
+                        x-kubernetes-int-or-string: true
+                    type: object
+                type: object
+              template:
+                nullable: true
+                oneOf:
+                - required:
+                  - ref
+                - required:
+                  - git
+                properties:
+                  git:
+                    description: |-
+                      Use a git repository as the template.
+
+                      The repository will be checked out at every server start. Fast-forward will be used if possible. Shallow clone is used if not cloned before.
+                    properties:
+                      branch:
+                        description: The branch to check out. If not set, the default branch is used.
+                        nullable: true
+                        type: string
+                      path:
+                        description: A subdirectory which contains the files.
+                        nullable: true
+                        type: string
+                      repository:
+                        description: |-
+                          The url to the git repository to check out.
+
+                          This can be any valid git url implemented in JGit (which should be equal to original git).
+                        type: string
+                    required:
+                    - repository
+                    type: object
+                  ref:
+                    description: NOT IMPLEMENTED YET
+                    properties:
+                      apiVersion:
+                        description: API version of the referent.
+                        type: string
+                      fieldPath:
+                        description: 'If referring to a piece of an object instead of an entire object, this string should contain a valid JSON/Go field access statement, such as desiredState.manifest.containers[2]. For example, if the object reference is to a container within a pod, this would take on a value like: "spec.containers{name}" (where "name" refers to the name of the container that triggered the event) or if no container name is specified "spec.containers[2]" (container with index 2 in this pod). This syntax is chosen only to have some well-defined way of referencing a part of an object.'
+                        type: string
+                      kind:
+                        description: 'Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                      resourceVersion:
+                        description: 'Specific resourceVersion to which this reference is made, if any. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency'
+                        type: string
+                      uid:
+                        description: 'UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids'
+                        type: string
+                    type: object
+                type: object
+            type: object
+          status:
+            nullable: true
+            type: object
+        required:
+        - spec
+        title: MinecraftServerV1Alpha1
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
