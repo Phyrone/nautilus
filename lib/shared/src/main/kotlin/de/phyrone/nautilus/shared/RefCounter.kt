@@ -27,6 +27,7 @@ class RefCounter {
         }
 
         private var closed = AtomicBoolean(false)
+
         override fun close() {
             val alreadyClosed = closed.getAndSet(true)
             if (alreadyClosed) return
@@ -34,6 +35,4 @@ class RefCounter {
             counter.update { it - 1 }
         }
     }
-
-
 }

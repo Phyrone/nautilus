@@ -1,27 +1,38 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.kotlin.plugin.noarg)
-    alias(libs.plugins.jetbrains.dokka)
+    java
+    alias(libs.plugins.fabric8.crds.generator)
 }
 
+
+val crdClassedDir = layout.buildDirectory.dir("generated/crd")
+sourceSets {
+    main {
+        java {
+            srcDir(crdClassedDir)
+        }
+    }
+}
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation(project(":lib:shared"))
-
     implementation(libs.k8s.client)
     implementation(libs.k8s.crds.annotations)
-    kapt(libs.k8s.crds.generator)
+    annotationProcessor(libs.k8s.crds.generator)
 }
 
-kapt {
-    arguments {
-        //arg("io.fabric8.crd.generator.parallel", "true")
+tasks {
+    compileJava {
+        dependsOn("crd2java")
     }
 }
-noArg {
-    annotation("de.phyrone.nautilus.crds.NoArgs")
+javaGen {
+    this.enumUppercase = true
+    source.set(file("src/main/k8s"))
+    this.packageOverrides = mapOf(
+        "de.phyrone.nautilus.v1alpha1" to "de.phyrone.nautilus.k8s.crds.v1alpha1",
+        "de.phyrone.nautilus.v1" to "de.phyrone.nautilus.k8s.crds.v1"
+    )
+    this.target.set(crdClassedDir)
 }
