@@ -36,4 +36,4 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build With JIB
-        run: ./gradlew provisioner:jib --image=ghcr.io/phyrone/nautilus-provisioner:${{ github.ref_name }}
+        run: ./gradlew provisioner:jib --image=ghcr.io/phyrone/nautilus/provisioner:${{ github.ref_name }}
