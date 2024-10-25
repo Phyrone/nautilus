@@ -9,8 +9,7 @@ import kotlin.system.exitProcess
     description = ["Builds the docker image for the given service"],
 )
 class BuilderMain {
-    class RefreshRepo() {
-    }
+    class RefreshRepo()
 
     companion object Main {
         @JvmStatic

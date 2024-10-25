@@ -243,7 +243,7 @@ internal inline fun <reified A : ContainerFluent<A>> A.setMemoryResources(spec: 
                 spec.minHeap
                     ?.let { min -> min.intVal?.toLong() ?: min.strVal?.let { parseMemorySize(it, relativeTo = max) } }
                     ?.coerceAtMost(max)
-                // use max memory except min memory is explicitly set with a blank value string
+                    // use max memory except min memory is explicitly set with a blank value string
                     ?: maxHeap.takeUnless { spec.minHeap?.strVal?.isBlank() == true }
             }
 
@@ -279,9 +279,10 @@ internal inline fun <reified A : ContainerFluent<A>> A.setMemoryResources(spec: 
                 val containerLimitKib = containerLimit / 1024
                 resources.addToLimits("memory", Quantity(containerLimitKib.toString(), "Ki"))
 
-                //overwrite
-                if (minHeap == maxHeap)
+                // overwrite
+                if (minHeap == maxHeap) {
                     resources.addToRequests("memory", Quantity(containerLimitKib.toString(), "Ki"))
+                }
             }
 
             resources.endResources()

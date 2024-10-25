@@ -13,24 +13,28 @@ class ProgressbarMon(
     private val progressBars = mutableMapOf<String, ProgressBar>()
 
     private var currentTask: ProgressBar? = null
-    override fun start(totalTasks: Int) {
 
+    override fun start(totalTasks: Int) {
     }
 
-    override fun beginTask(title: String, totalWork: Int) {
-        currentTask = progressBars.getOrPut(title) {
-            ProgressBarBuilder()
-                .setTaskName(this.title)
-                .setStyle(ProgressBarStyle.COLORFUL_UNICODE_BLOCK)
-                .setInitialMax(totalWork.toLong())
-                .continuousUpdate()
-                .setUpdateIntervalMillis(100)
-                .showSpeed()
-                .setConsumer(InteractiveConsoleProgressBarConsumer(System.out))
-                .build().also {
-                    it.setExtraMessage(" $title")
-                }
-        }
+    override fun beginTask(
+        title: String,
+        totalWork: Int,
+    ) {
+        currentTask =
+            progressBars.getOrPut(title) {
+                ProgressBarBuilder()
+                    .setTaskName(this.title)
+                    .setStyle(ProgressBarStyle.COLORFUL_UNICODE_BLOCK)
+                    .setInitialMax(totalWork.toLong())
+                    .continuousUpdate()
+                    .setUpdateIntervalMillis(100)
+                    .showSpeed()
+                    .setConsumer(InteractiveConsoleProgressBarConsumer(System.out))
+                    .build().also {
+                        it.setExtraMessage(" $title")
+                    }
+            }
     }
 
     override fun update(completed: Int) {
@@ -39,7 +43,6 @@ class ProgressbarMon(
 
     override fun endTask() {
         currentTask = null
-
     }
 
     override fun isCancelled(): Boolean {
@@ -53,5 +56,4 @@ class ProgressbarMon(
             it.close()
         }
     }
-
 }

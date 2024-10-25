@@ -12,7 +12,6 @@ repositories {
 dependencies {
     implementation(libs.bundles.kotlin.stdlib)
     implementation(libs.bundles.kotlin.coroutines)
-
 }
 
 kotlin {
