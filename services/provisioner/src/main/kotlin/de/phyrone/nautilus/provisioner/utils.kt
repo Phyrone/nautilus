@@ -2,25 +2,13 @@ package de.phyrone.nautilus.provisioner
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Ref
+import org.eclipse.jgit.transport.URIish
 import java.net.URI
+import java.net.URL
 
 private val NON_ALPHANUMERIC = Regex("[^a-zA-Z0-9-]")
 
-fun URI.destructForGit(): Pair<URI, String?> =
-    Pair(
-        URI(
-            this.scheme,
-            this.userInfo,
-            this.host,
-            this.port,
-            this.path,
-            this.query,
-            null,
-        ),
-        this.fragment,
-    )
-
-fun URI.withoutCredentials(): URI =
+fun URI.withoutCredentials() =
     URI(
         this.scheme,
         null,
@@ -31,6 +19,10 @@ fun URI.withoutCredentials(): URI =
         this.fragment,
     )
 
+fun URI.containsCredentials() = this.userInfo != null
+
+fun URL.containsCredentials() = this.userInfo != null
+
 fun URI.bestEffortName(): String? {
     val pathname = this.path.split("/").lastOrNull() ?: return null
     // remote .git ending
@@ -40,7 +32,7 @@ fun URI.bestEffortName(): String? {
     return name
 }
 
-fun URI.findRemoteName(names: MutableList<String>): String {
+fun URI.findRemoteName(names: MutableSet<String>): String {
     val name = bestEffortName() ?: "remote"
     if (name !in names) {
         return name
@@ -63,3 +55,18 @@ fun Git.getOrCreateBranch(
         .setName(name)
         .setStartPoint(start)
         .call()
+
+fun Git.upsertRemotes(remotes: List<URI>): Map<URI, String> {
+    val uniqueRemotes = remotes.distinct()
+    val usedNames = mutableSetOf<String>()
+    val urlToName =
+        uniqueRemotes
+            .associateWith { it.findRemoteName(usedNames) }
+    for ((url, remoteName) in urlToName) {
+        remoteAdd()
+            .setName(remoteName)
+            .setUri(URIish(url.toURL()))
+            .call()
+    }
+    return urlToName
+}

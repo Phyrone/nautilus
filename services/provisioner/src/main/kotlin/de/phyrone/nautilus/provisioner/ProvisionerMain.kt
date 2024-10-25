@@ -1,15 +1,14 @@
 package de.phyrone.nautilus.provisioner
 
+import org.eclipse.jgit.api.ArchiveCommand
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.archive.TarFormat
+import org.eclipse.jgit.archive.TgzFormat
+import org.eclipse.jgit.archive.ZipFormat
 import org.eclipse.jgit.errors.RepositoryNotFoundException
-import org.eclipse.jgit.lib.Ref
-import org.eclipse.jgit.merge.MergeStrategy
-import org.eclipse.jgit.transport.URIish
 import org.slf4j.LoggerFactory
 import picocli.CommandLine
-import picocli.CommandLine.Command
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 import java.io.File
 import java.net.URI
 import java.util.concurrent.Callable
@@ -25,94 +24,99 @@ class ProvisionerMain : Callable<Int> {
         required = true,
         defaultValue = "\${env:NAUTILUS_PROVISIONER_OUTPUT:-./out}",
     )
-    lateinit var output: File
+    var output: File = File("./out")
 
-    @Parameters(
-        index = "0..*",
-        defaultValue = "\${env:NAUTILUS_PROVISIONER_URLS}",
+    @Option(
+        names = ["-w", "--work-dir"],
+        required = true,
+        defaultValue = "\${env:NAUTILUS_PROVISIONER_WORK_DIR:-./}",
     )
-    var urls: List<URI> = emptyList()
+    var workDir: File = File(".")
+
+    @ArgGroup(exclusive = false, multiplicity = "0..", heading = "Repositories:")
+    var repos: List<Repo>? = null
+
+    class Repo {
+        @Parameters(index = "0", arity = "1", description = ["Name of the repository"])
+        lateinit var name: String
+
+        @Option(names = ["-r", "--from", "--uri", "--url", "--repo"], required = true)
+        lateinit var url: URI
+
+        @Option(names = ["-b", "--branch"])
+        var branch: String? = null
+
+        @Option(names = ["-p", "--path"])
+        var paths: List<File>? = null
+
+        // TODO credentials
+    }
 
     override fun call(): Int {
+        ArchiveCommand.registerFormat("zip", ZipFormat())
+        ArchiveCommand.registerFormat("tar", TarFormat())
+        ArchiveCommand.registerFormat("tgz", TgzFormat())
+        repos?.forEach {
+            it.name = it.name.replace(NO_SPECIAL_CHARACTERS, "")
+        }
         logger.debug("Output: {}", output.absolutePath)
+        logger.debug("WorkDir: {}", workDir.absolutePath)
 
         val git =
             try {
-                Git.open(output)
+                Git.open(workDir)
             } catch (e: RepositoryNotFoundException) {
                 Git.init()
-                    .setDirectory(output)
+                    .setGitDir(workDir)
+                    .setBare(true)
                     .call()
             }
-
-        val names = mutableListOf<String>()
-
-        val templateRepos =
-            urls
-                .map {
-                    val (url, branch) = it.destructForGit()
-                    url to (branch ?: "HEAD")
-                }
-
-        val urlToName = mutableMapOf<URI, String>()
-        val remotesGrouped =
-            urls
-                .groupBy { it.destructForGit().first }
-                .mapValues { (_, v) -> v.map { it.destructForGit().second ?: "HEAD" } }
-
-        for ((url, branches) in remotesGrouped) {
-            val remoteName = url.findRemoteName(names)
-            urlToName[url] = remoteName
-            logger.info("Mapped $url -> $remoteName")
-
-            git.remoteAdd()
-                .setName(remoteName)
-                .setUri(URIish(url.toURL()))
-                .call()
-
+        // TODO maybe do something more
+        val repos = repos ?: return 0
+        output.mkdirs()
+        val remotes = git.upsertRemotes(repos.map { it.url })
+        for (repo in repos) {
+            logger.info("Provisioning {}", repo.name)
+            val remote = remotes[repo.url] ?: error("no remote was defined for ${repo.url} but it should be")
+            val remoteRef = repo.branch?.let { "refs/heads/$it" } ?: "HEAD"
+            val localRef = "refs/heads/${repo.name}"
             git.fetch()
-                .setRemote(remoteName)
                 .setRemoveDeletedRefs(true)
-                .setRefSpecs(
-                    *branches
-                        .map {
-                            if (it != "HEAD") {
-                                "+refs/heads/$it:refs/remotes/$remoteName/$it"
-                            } else {
-                                // fetch main branch
-                                "+HEAD:refs/remotes/$remoteName/HEAD"
-                            }
-                        }.toTypedArray(),
-                )
-                .setProgressMonitor(ProgressbarMon("Fetch [$remoteName]"))
+                .setRemote(remote)
+                .setRefSpecs("+$remoteRef:$localRef")
+                .setProgressMonitor(ProgressbarMon("Fetch [${repo.name}]"))
                 .call()
-        }
-
-        var templateBranchN: Ref? = null
-        templateRepos.forEach { (url, branchName) ->
-            val remoteName = urlToName[url] ?: error("no remote was defined for $url")
-            val remoteRef = git.repository.findRef("refs/remotes/$remoteName/$branchName")
-            templateBranchN = templateBranchN ?: git.getOrCreateBranch("template", remoteRef.name).also {
-                templateBranchN = it
-                git.checkout().setName("template")
-                    .setForced(true)
-                    .setForceRefUpdate(true)
-                    .setStartPoint(remoteRef.name)
+            val tree = git.repository.resolve(localRef)
+            val archiveFile = output.resolve(File("${repo.name}.zip"))
+            archiveFile.outputStream().use { fileStream ->
+                git.archive()
+                    .setFormatOptions(
+                        mapOf(
+                            // dont need compression here
+                            "compression-level" to 0,
+                        ),
+                    )
+                    .setTree(tree)
+                    .setOutputStream(fileStream)
+                    .setFilename(archiveFile.name)
+                    .also {
+                        val paths =
+                            repo.paths
+                                ?.takeUnless { it.isEmpty() }
+                                ?.map { it.path }?.toTypedArray()
+                        if (paths != null) {
+                            it.setPaths(*paths)
+                        }
+                    }
                     .call()
             }
-            git.merge()
-                .include(remoteRef)
-                .setStrategy(MergeStrategy.RESOLVE)
-                .setSquash(true)
-                .setMessage("Merge [$remoteName/$branchName] -> [template]")
-                .setProgressMonitor(ProgressbarMon("Merge [$remoteName/$branchName] -> [template]"))
-                .call()
         }
 
         return 0
     }
 
     companion object Main {
+        private val NO_SPECIAL_CHARACTERS = Regex("[^a-zA-Z0-9-]")
         private val logger = LoggerFactory.getLogger(ProvisionerMain::class.java)
 
         @JvmStatic

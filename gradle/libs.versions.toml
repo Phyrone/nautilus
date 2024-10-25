@@ -115,6 +115,7 @@ k8s-crds-generator = { module = "io.fabric8:crd-generator-apt", version.ref = "k
 
 # JGit
 jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit-version" }
+jgit-archive = { module = "org.eclipse.jgit:org.eclipse.jgit.archive", version.ref = "jgit-version" }
 
 # Jib
 jib = { module = "com.google.cloud.tools:jib-core", version.ref = "jib-version" }
