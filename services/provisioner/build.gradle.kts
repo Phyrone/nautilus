@@ -55,3 +55,22 @@ jib {
 ktlint {
     ignoreFailures.set(true)
 }
+jib{
+    from {
+        image = "eclipse-temurin:21-jdk"
+        platforms {
+            platform {
+                os = "linux"
+                architecture = "amd64"
+            }
+            platform {
+                os = "linux"
+                architecture = "arm64"
+            }
+        }
+    }
+    container{
+        appRoot = "/app"
+        workingDirectory = "/data"
+    }
+}

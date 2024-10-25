@@ -23,11 +23,13 @@ class ProvisionerMain : Callable<Int> {
     @Option(
         names = ["-o", "--output"],
         required = true,
+        defaultValue = "\${env:NAUTILUS_PROVISIONER_OUTPUT:-./out}",
     )
     lateinit var output: File
 
     @Parameters(
         index = "0..*",
+        defaultValue = "\${env:NAUTILUS_PROVISIONER_URLS}",
     )
     var urls: List<URI> = emptyList()
 
@@ -62,12 +64,11 @@ class ProvisionerMain : Callable<Int> {
             val remoteName = url.findRemoteName(names)
             urlToName[url] = remoteName
             logger.info("Mapped $url -> $remoteName")
-            val remote =
-                git.remoteAdd()
-                    .setName(remoteName)
-                    .setUri(URIish(url.toURL()))
-                    .call()
-            git.pull().setRemote(remoteName)
+
+            git.remoteAdd()
+                .setName(remoteName)
+                .setUri(URIish(url.toURL()))
+                .call()
 
             git.fetch()
                 .setRemote(remoteName)
@@ -91,16 +92,14 @@ class ProvisionerMain : Callable<Int> {
         templateRepos.forEach { (url, branchName) ->
             val remoteName = urlToName[url] ?: error("no remote was defined for $url")
             val remoteRef = git.repository.findRef("refs/remotes/$remoteName/$branchName")
-            val templateBranch =
-                templateBranchN ?: git.getOrCreateBranch("template", remoteRef.name).also {
-                    templateBranchN = it
-                    git.checkout().setName("template")
-                        .setForced(true)
-                        .setForceRefUpdate(true)
-                        .setStartPoint(remoteRef.name)
-                        .call()
-                }
-
+            templateBranchN = templateBranchN ?: git.getOrCreateBranch("template", remoteRef.name).also {
+                templateBranchN = it
+                git.checkout().setName("template")
+                    .setForced(true)
+                    .setForceRefUpdate(true)
+                    .setStartPoint(remoteRef.name)
+                    .call()
+            }
             git.merge()
                 .include(remoteRef)
                 .setStrategy(MergeStrategy.RESOLVE)
