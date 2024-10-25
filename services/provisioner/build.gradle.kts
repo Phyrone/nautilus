@@ -18,6 +18,9 @@ dependencies {
     implementation(libs.bundles.kotlin.stdlib)
     implementation(libs.bundles.kotlin.coroutines)
     implementation(libs.picocli)
+    implementation(libs.jgit)
+    implementation(libs.progressbar)
+    implementation(libs.jline)
     implementation(libs.bundles.jackson)
     implementation(libs.bundles.koin)
 }
