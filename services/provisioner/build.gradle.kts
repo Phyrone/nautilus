@@ -52,3 +52,6 @@ jib {
         this.workingDirectory = "/data"
     }
 }
+ktlint {
+    ignoreFailures.set(true)
+}

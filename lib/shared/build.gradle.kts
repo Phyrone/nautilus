@@ -2,6 +2,7 @@ plugins {
     idea
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.jetbrains.dokka)
+    alias(libs.plugins.kotlin.ktlint)
 }
 
 repositories {
@@ -16,4 +17,7 @@ dependencies {
 
 kotlin {
     jvmToolchain(21)
+}
+ktlint {
+    ignoreFailures.set(true)
 }

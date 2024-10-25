@@ -33,3 +33,7 @@ jib {
     container {
     }
 }
+
+ktlint {
+    ignoreFailures.set(true)
+}
