@@ -1,22 +1,16 @@
 plugins {
-    idea
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.jetbrains.dokka)
-    alias(libs.plugins.kotlin.ktlint)
 }
-
 repositories {
     mavenCentral()
 }
-
-dependencies {
+dependencies{
     implementation(libs.bundles.kotlin.stdlib)
     implementation(libs.bundles.kotlin.coroutines)
-}
+    implementation(libs.bundles.koin)
 
-kotlin {
-    jvmToolchain(21)
-}
-ktlint {
-    ignoreFailures.set(true)
+    implementation(libs.bundles.ktor.client)
+    implementation("io.ktor:ktor-client-okhttp-jvm:3.0.1")
+
+
 }

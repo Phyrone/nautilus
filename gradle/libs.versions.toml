@@ -8,7 +8,7 @@ shadow-plugin-version = "8.1.1"
 ktlint-plugin-version = "12.1.1"
 
 # Kotlin, and closely related
-ktor-version = "3.0.0"
+ktor = "3.0.1"
 kotlin-version = "2.0.21"
 dokka-version = "1.9.20"
 coroutines-version = "1.9.0"
@@ -16,23 +16,25 @@ ksp-version = "2.0.21-1.0.26"
 
 # Libraries
 jgit-version = "7.0.0.202409031743-r"
-jackson-version = "2.18.0"
+jackson-version = "2.18.1"
 slf4j-version = "2.0.16"
-logback-version = "1.5.11"
+logback-version = "1.5.12"
 guava-version = "33.3.1-jre"
-bouncycastle-version = "1.78.1"
+bouncycastle-version = "1.79"
 jib-version = "0.27.2"
 kubernetes-client = "6.13.4"
 koin-version = "4.0.0"
 koin-annotations-version = "2.0.0-Beta1"
 mccoroutines-version = "2.20.0"
 picocli-version = "4.7.6"
+progressbar = "0.10.1"
+jline = "3.27.1"
 builder-annotations = "0.200.0"
 lombok = "1.18.34"
 
 # Protobuf (except gradle plugin)
 protobuf-version = "4.28.3"
-grpc-version = "1.68.0"
+grpc-version = "1.68.1"
 grpc-kotlin-version = "1.4.1"
 
 #flaxoos-extra-plugins-version = "1.2.10"
@@ -49,9 +51,21 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutines-version" }
 kotlinx-coroutines-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "coroutines-version" }
 
+# Ktor
+ktor-serialization-jackson = { module = "io.ktor:ktor-serialization-jackson", version.ref = "ktor" }
+
 # Ktor Server
-ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor-version" }
-ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor-version" }
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
+
+# Ktor Client
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-encoding = { module = "io.ktor:ktor-client-encoding", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-bom-remover = { module = "io.ktor:ktor-client-bom-remover", version.ref = "ktor" }
+
 
 # Ktor Server Task Scheduling
 #ktor-server-task-scheduling-core = { module = "io.github.flaxoos:ktor-server-task-scheduling-core-jvm", version.ref = "flaxoos-extra-plugins-version" }
@@ -103,6 +117,7 @@ k8s-crds-generator = { module = "io.fabric8:crd-generator-apt", version.ref = "k
 
 # JGit
 jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit-version" }
+jgit-archive = { module = "org.eclipse.jgit:org.eclipse.jgit.archive", version.ref = "jgit-version" }
 
 # Jib
 jib = { module = "com.google.cloud.tools:jib-core", version.ref = "jib-version" }
@@ -128,8 +143,7 @@ mccoroutines-bungee-core = { module = "com.github.shynixn.mccoroutine:mccoroutin
 # Builder Annotations
 builder-annotations = { module = "io.sundr:builder-annotations", version.ref = "builder-annotations" }
 
-# Lombok
-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
 
 [bundles]
 
@@ -184,6 +198,16 @@ logging = [
 ktor-server = [
     "ktor-server-core",
     "ktor-server-netty",
+]
+
+ktor-client = [
+    "ktor-serialization-jackson",
+    "ktor-client-core",
+    "ktor-client-okhttp",
+    "ktor-content-negotiation",
+    "ktor-client-encoding",
+    "ktor-client-logging",
+    "ktor-client-bom-remover"
 ]
 
 mcroutines-folia = [

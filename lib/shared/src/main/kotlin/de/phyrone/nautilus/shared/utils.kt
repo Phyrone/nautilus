@@ -4,24 +4,25 @@ import java.util.Locale
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.primaryConstructor
 
-
-//https://stackoverflow.com/a/44570679
+// https://stackoverflow.com/a/44570679
 inline infix fun <reified T : Any> T.merge(other: T): T {
-
     val propertiesByName = T::class.declaredMemberProperties.associateBy { it.name }
-    val primaryConstructor = T::class.primaryConstructor
-        ?: throw IllegalArgumentException("merge type must have a primary constructor")
-    val args = primaryConstructor.parameters.associateWith { parameter ->
-        val property = propertiesByName[parameter.name]
-            ?: throw IllegalStateException("no declared member property found with name '${parameter.name}'")
-        (property.get(this) ?: property.get(other))
-    }
+    val primaryConstructor =
+        T::class.primaryConstructor
+            ?: throw IllegalArgumentException("merge type must have a primary constructor")
+    val args =
+        primaryConstructor.parameters.associateWith { parameter ->
+            val property =
+                propertiesByName[parameter.name]
+                    ?: throw IllegalStateException("no declared member property found with name '${parameter.name}'")
+            (property.get(this) ?: property.get(other))
+        }
     return primaryConstructor.callBy(args)
 }
 
 fun unreachable(): Nothing = throw IllegalStateException("This should never be reached")
-fun unsupported(): Nothing = throw UnsupportedOperationException()
 
+fun unsupported(): Nothing = throw UnsupportedOperationException()
 
 /**
  * Parses a memory size string to a long.
@@ -38,23 +39,24 @@ fun unsupported(): Nothing = throw UnsupportedOperationException()
 fun parseMemorySize(
     size: String,
     fallbackUnit: String = "B",
-    relativeTo: Long? = null
+    relativeTo: Long? = null,
 ): Long? {
-    val units = mapOf(
-        "b" to 1L,
-        "kb" to 1_000L, "k" to 1_000L,
-        "mb" to 1_000_000L, "m" to 1_000_000L,
-        "gb" to 1_000_000_000L, "g" to 1_000_000_000L,
-        "tb" to 1_000_000_000_000L, "t" to 1_000_000_000_000L,
-        "pb" to 1_000_000_000_000_000L, "p" to 1_000_000_000_000_000L,
-        "eb" to 1_000_000_000_000_000_000L, "e" to 1_000_000_000_000_000_000L,
-        "kib" to 1_024L,
-        "mib" to 1_048_576L,
-        "gib" to 1_073_741_824L,
-        "tib" to 1_099_511_627_776L,
-        "pib" to 1_125_899_906_842_624L,
-        "eib" to 1_152_921_504_606_846_976L,
-    )
+    val units =
+        mapOf(
+            "b" to 1L,
+            "kb" to 1_000L, "k" to 1_000L,
+            "mb" to 1_000_000L, "m" to 1_000_000L,
+            "gb" to 1_000_000_000L, "g" to 1_000_000_000L,
+            "tb" to 1_000_000_000_000L, "t" to 1_000_000_000_000L,
+            "pb" to 1_000_000_000_000_000L, "p" to 1_000_000_000_000_000L,
+            "eb" to 1_000_000_000_000_000_000L, "e" to 1_000_000_000_000_000_000L,
+            "kib" to 1_024L,
+            "mib" to 1_048_576L,
+            "gib" to 1_073_741_824L,
+            "tib" to 1_099_511_627_776L,
+            "pib" to 1_125_899_906_842_624L,
+            "eib" to 1_152_921_504_606_846_976L,
+        )
 
     val trimmed = size.trim()
 
@@ -66,7 +68,6 @@ fun parseMemorySize(
         val multiplier = units[unit] ?: units[fallbackUnit.lowercase()] ?: return null
         return (value * multiplier).toLong()
     }
-
 }
 
 /**
@@ -94,14 +95,14 @@ fun stringifyMemorySize(
     singleCharUnit: Boolean = false,
     decimalPlaces: Int = 0,
     noSpace: Boolean = false,
-    locale: Locale? = null
+    locale: Locale? = null,
 ): String {
-
-    val units = when {
-        singleCharUnit -> arrayOf("B", "K", "M", "G", "T", "P", "E", "Z", "Y")
-        binaryUnit -> arrayOf("B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB")
-        else -> arrayOf("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-    }
+    val units =
+        when {
+            singleCharUnit -> arrayOf("B", "K", "M", "G", "T", "P", "E", "Z", "Y")
+            binaryUnit -> arrayOf("B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB")
+            else -> arrayOf("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+        }
 
     if (size < 0) throw IllegalArgumentException("Size must be non-negative")
 
@@ -126,8 +127,7 @@ fun main(args: Array<String>) {
             binaryUnit = true,
             singleCharUnit = true,
             noSpace = true,
-            decimalPlaces = 0
-        )
+            decimalPlaces = 0,
+        ),
     )
-
 }
