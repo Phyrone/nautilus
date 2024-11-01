@@ -20,5 +20,3 @@ spec:
       # ViaVersion, ViaBackwards (a plugin to support multiple client versions)
       - viaversion
       - viabackwards
-  persistence:
-    enabled: false
