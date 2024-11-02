@@ -143,7 +143,14 @@ mccoroutines-bungee-core = { module = "com.github.shynixn.mccoroutine:mccoroutin
 # Builder Annotations
 builder-annotations = { module = "io.sundr:builder-annotations", version.ref = "builder-annotations" }
 
+# Progressbar
+progressbar = { module = "me.tongfei:progressbar", version.ref = "progressbar" }
 
+# JLine
+jline = { module = "org.jline:jline", version.ref = "jline" }
+
+# Lombok
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 
 [bundles]
 
