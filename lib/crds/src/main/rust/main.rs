@@ -67,7 +67,7 @@ async fn main() {
             let multi_progress = MultiProgress::new();
             let mut jobs = JoinSet::new();
             let crds_api = Api::<CustomResourceDefinition>::all(client.clone());
-            let params = PatchParams::apply("nautilus-crd-generator");
+            let params = PatchParams::apply("nautilus-crd-generator").force();
             for crd in crds {
                 let progress = ProgressBar::new(1);
                 progress.set_style(ProgressStyle::default_spinner());

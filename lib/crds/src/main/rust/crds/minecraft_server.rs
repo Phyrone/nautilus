@@ -1,6 +1,6 @@
+use crate::crds::shared::{MinecraftResourcesSpec, MinecraftTemplateSpec, ProvisionerSpec};
 use k8s_openapi::api::apps::v1::DeploymentStrategy;
-use k8s_openapi::api::core::v1::ObjectReference;
-use k8s_openapi::apimachinery::pkg::util::intstr::IntOrString;
+use k8s_openapi::api::core::v1::{ObjectReference, PodTemplateSpec};
 use kube::CustomResource;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -16,95 +16,33 @@ use serde::{Deserialize, Serialize};
 )]
 #[serde(rename_all = "camelCase")]
 pub struct MinecraftServerV1Alpha1Spec {
-    #[schemars(range(min = 0))]
-    replicas: Option<i32>,
-    deployment_strategy: Option<DeploymentStrategy>,
+    #[schemars(range(min = -1))]
+    pub replicas: Option<i32>,
+    pub cluster: ObjectReference,
+    pub deployment_strategy: Option<DeploymentStrategy>,
+
+    /// If set to true, the server will be deleted once the pod is stopped.
+    ///
+    /// This is not recommended for persistent servers.
+    ///
+    /// Default is true for inpersistent servers and false for persistent servers.
+    pub delete_on_stop: Option<bool>,
     /// The base image to use for the server
     /// By default, itzg/minecraft-server is used.
     /// This does not affect the provisioner service.
-    image: Option<String>,
+    pub image: Option<String>,
     //TODO settings (properties etc.)
     //TODO env (additional environment variables)
     //TODO additional volumes, mounts, ports, etc.
     //TODO jvm settings (memory, aikar flags, etc.)
-    resources: Option<MinecraftServerResourcesSpec>,
+    pub resources: Option<MinecraftResourcesSpec>,
 
-    template: Option<MinecraftTemplateSpec>,
-    install: Option<MinecraftServerInstallsSpec>,
-    persistence: Option<MinecraftServerPersistence>,
-}
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub enum MinecraftTemplateSpec {
-    /// NOT IMPLEMENTED YET
-    #[serde(rename = "ref")]
-    Ref(ObjectReference),
+    pub template: Option<MinecraftTemplateSpec>,
+    pub install: Option<MinecraftServerInstallsSpec>,
+    pub persistence: Option<MinecraftServerPersistence>,
 
-    /// Use a git repository as the template.
-    ///
-    /// The repository will be checked out at every server start.
-    /// Fast-forward will be used if possible.
-    /// Shallow clone is used if not cloned before.
-    #[serde(rename = "git")]
-    Git(GitTemplate),
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct GitTemplate {
-    /// The url to the git repository to check out.
-    ///
-    /// This can be any valid git url implemented in JGit (which should be equal to original git).
-    repository: String,
-    /// The branch to check out. If not set, the default branch is used.
-    branch: Option<String>,
-    /// A subdirectory which contains the files.
-    path: Option<String>,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct MinecraftServerResourcesSpec {
-    pub memory: Option<MineecraftServerResourcesMemorySpec>,
-
-    //TODO cpu settings
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct MineecraftServerResourcesMemorySpec {
-    /// The max heap size for the JVM.
-    /// This is the amount of memory the JVM can use for the heap.
-    /// The JVM will use more memory than this value. The exact amount depends on the JVM implementation.
-    ///
-    /// The value can be a number in bytes or a string with a unit.
-    /// An empty string means no limit.
-    ///
-    /// Default is 2G.
-    pub max_heap: Option<IntOrString>,
-
-    /// The min heap size for the JVM.
-    /// This is the amount of memory the JVM will start with.
-    /// The JVM will use more memory than this value. The exact amount depends on the JVM implementation.
-    ///
-    /// The value can be a number in bytes or a string with a unit.
-    /// An empty string means no limit.
-    ///
-    /// Default is the same as max heap size. (recommended)
-    ///
-    /// This also sets the requested memory for the container.
-    pub min_heap: Option<IntOrString>,
-
-    /// A margin to add to the max heap size for the JVM overhead like metaspace.
-    ///
-    /// Default is 25% of the max heap size.
-    /// If unsure, leave it at the default.
-    pub jvm_overhead: Option<IntOrString>,
-
-    /// If set to true, the container memory limit will be set to the max heap size + jvm overhead.
-    /// If set to false, no memory limit will be set but only the heap size.
-    ///
-    /// Default is true.
-    pub enable_container_limit: Option<bool>,
+    pub provisioner: Option<ProvisionerSpec>,
+    pub pod_overrides: Option<PodTemplateSpec>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
@@ -115,7 +53,6 @@ pub struct MinecraftServerInstallsSpec {
     //TODO install resourcepack
     //TODO install world
     //TODO install mods?
-
     /// A list of plugins to install.
     ///
     /// These are the resource ids inside spigotmc.
@@ -144,7 +81,7 @@ pub enum MinecraftServerInstallSpecServerSoftware {
         /// Papermc is an optimized minecraft server based on Bukkit/Spigot.
         /// It implements the Bukkit plugin api and has a lot of fancy built-in features.
         /// Find more information at [PaperMC](https://papermc.io/software/paper).
-        paper: String
+        paper: String,
     },
     Purpur {
         /// Install Purpur with the given version or latest.
@@ -154,7 +91,7 @@ pub enum MinecraftServerInstallSpecServerSoftware {
         /// It also add some nice commands like (/tpsbar, /rambar and more).
         ///
         /// Find more information at [PurpurMC](https://purpurmc.org/).
-        purpur: String
+        purpur: String,
     },
     Folia {
         /// Install Folia with the given version or latest.
@@ -162,21 +99,47 @@ pub enum MinecraftServerInstallSpecServerSoftware {
         /// Folia is a fork of Paper with regionized multithreading.
         /// WARNING: all plugins need to have explicit support for Folia to work.
         /// Folia makes most sense for large servers with many spread out players.
+        ///
         /// Find more information at [PaperMC](https://papermc.io/software/folia).
-        folia: String
+        folia: String,
     },
     //TODO custom server url
 }
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct MinecraftServerPersistence {
-    /// Enable persistence for the server.
-    /// Data will be stored in a persistent volume.
+    /// Enable persistence for the server. Data will be stored in a persistent volume.
     /// The server will be handled as stateful set instead of deployment.
-    enabled: Option<bool>,
-    storage_class: Option<String>,
-    size: Option<String>,
+    ///
+    /// If not set, the default is false.
+    ///
+    /// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+    pub enabled: Option<bool>,
+    /// The storage class of the persistent volume claim.
+    ///
+    /// If not set, the default is used. (handled by k8s)
+    ///
+    /// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1
+    pub storage_class: Option<String>,
+    /// The size of the persistent volume claim.
+    ///
+    /// If not set, the default is 1Gi.
+    /// The storage class of the persistent volume claim.
+    pub size: Option<String>,
+    /// The access mode of the persistent volume claim.
+    ///
+    /// If not set, the default is ReadWriteOnce.
+    ///
+    /// ReadWriteOnce: The volume can be mounted as read-write by a single node.
+    /// ReadOnlyMany: The volume can be mounted read-only by many nodes.
+    /// ReadWriteMany: The volume can be mounted as read-write by many nodes.
+    /// ReadWriteOncePod: The volume can be mounted as read-write by a single pod.
+    ///
+    /// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
+    pub access_mode: Option<String>,
 }
-
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct MinecraftServerV1Alpha1Status {}
+pub struct MinecraftServerV1Alpha1Status {
+    #[serde(default)]
+    pub replicas: i32,
+}

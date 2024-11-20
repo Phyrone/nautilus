@@ -1,55 +1,32 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: minecraftservers.nautilus.phyrone.de
+  name: minecraftproxies.nautilus.phyrone.de
 spec:
   group: nautilus.phyrone.de
   names:
     categories: []
-    kind: MinecraftServer
-    plural: minecraftservers
+    kind: MinecraftProxy
+    plural: minecraftproxies
     shortNames: []
-    singular: minecraftserver
+    singular: minecraftproxy
   scope: Namespaced
   versions:
   - additionalPrinterColumns: []
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Auto-generated derived type for MinecraftServerV1Alpha1Spec via `CustomResource`
+        description: Auto-generated derived type for MinecraftProxyV1Alpha1Spec via `CustomResource`
         properties:
           spec:
             properties:
-              deploymentStrategy:
-                description: DeploymentStrategy describes how to replace existing pods with new ones.
-                nullable: true
-                properties:
-                  rollingUpdate:
-                    description: Rolling update config params. Present only if DeploymentStrategyType = RollingUpdate.
-                    properties:
-                      maxSurge:
-                        description: 'The maximum number of pods that can be scheduled above the desired number of pods. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). This can not be 0 if MaxUnavailable is 0. Absolute number is calculated from percentage by rounding up. Defaults to 25%. Example: when this is set to 30%, the new ReplicaSet can be scaled up immediately when the rolling update starts, such that the total number of old and new pods do not exceed 130% of desired pods. Once old pods have been killed, new ReplicaSet can be scaled up further, ensuring that total number of pods running at any time during the update is at most 130% of desired pods.'
-                        x-kubernetes-int-or-string: true
-                      maxUnavailable:
-                        description: 'The maximum number of pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). Absolute number is calculated from percentage by rounding down. This can not be 0 if MaxSurge is 0. Defaults to 25%. Example: when this is set to 30%, the old ReplicaSet can be scaled down to 70% of desired pods immediately when the rolling update starts. Once new pods are ready, old ReplicaSet can be scaled down further, followed by scaling up the new ReplicaSet, ensuring that the total number of pods available at all times during the update is at least 70% of desired pods.'
-                        x-kubernetes-int-or-string: true
-                    type: object
-                  type:
-                    description: Type of deployment. Can be "Recreate" or "RollingUpdate". Default is RollingUpdate.
-                    type: string
-                type: object
-              image:
-                description: The base image to use for the server By default, itzg/minecraft-server is used. This does not affect the provisioner service.
+              baseImage:
                 nullable: true
                 type: string
               install:
                 nullable: true
                 properties:
                   modrinth:
-                    description: |-
-                      A list of modrinth resources to install.
-
-                      This can be plugins, mods, datapacks, etc. Thanks to the work of itzg they will be automatically placed in the correct folder. Resources are identified by their slug or project id. Datapacks are prefixed with `datapack:`. See more at [Itzg's Minecraft Docker Image](https://docker-minecraft-server.readthedocs.io/en/latest/mods-and-plugins/modrinth/)
                     items:
                       type: string
                     nullable: true
@@ -57,66 +34,37 @@ spec:
                   software:
                     anyOf:
                     - required:
-                      - paper
+                      - bungeecord
                     - required:
-                      - purpur
+                      - waterfall
                     - required:
-                      - folia
+                      - velocity
                     nullable: true
                     properties:
-                      folia:
-                        description: |-
-                          Install Folia with the given version or latest.
-
-                          Folia is a fork of Paper with regionized multithreading. WARNING: all plugins need to have explicit support for Folia to work. Folia makes most sense for large servers with many spread out players. Find more information at [PaperMC](https://papermc.io/software/folia).
+                      bungeecord:
                         type: string
-                      paper:
-                        description: |-
-                          Install PaperMC with the given version or latest.
-
-                          Papermc is an optimized minecraft server based on Bukkit/Spigot. It implements the Bukkit plugin api and has a lot of fancy built-in features. Find more information at [PaperMC](https://papermc.io/software/paper).
+                      velocity:
                         type: string
-                      purpur:
-                        description: |-
-                          Install Purpur with the given version or latest.
-
-                          Purpur is a fork of Paper (more exact Pufferfish) with additional features and optimizations. Most significantly, it makes a lot more mechanics configurable. It also add some nice commands like (/tpsbar, /rambar and more).
-
-                          Find more information at [PurpurMC](https://purpurmc.org/).
+                      waterfall:
                         type: string
                     type: object
                   spigot:
-                    description: |-
-                      A list of plugins to install.
-
-                      These are the resource ids inside spigotmc. They will be automatically placed in the plugins folder. Not all resources are downloadable as some are premium or point to external sites which might not be supported. The resource id is part of the url of the resource. f.e. `https://www.spigotmc.org/resources/luckperms.28140/` has the id `28140`.
-
-                      See more at [Itzg's Minecraft Docker Image](https://docker-minecraft-server.readthedocs.io/en/latest/mods-and-plugins/spiget/) We might extract the resource id from the url ourselves in the future.
                     items:
                       format: int32
                       type: integer
                     nullable: true
                     type: array
                 type: object
-              persistence:
+              provisioner:
                 nullable: true
                 properties:
                   enabled:
-                    description: Enable persistence for the server. Data will be stored in a persistent volume. The server will be handled as stateful set instead of deployment.
                     nullable: true
                     type: boolean
-                  size:
-                    nullable: true
-                    type: string
-                  storageClass:
+                  image:
                     nullable: true
                     type: string
                 type: object
-              replicas:
-                format: int32
-                minimum: 0.0
-                nullable: true
-                type: integer
               resources:
                 nullable: true
                 properties:
@@ -127,7 +75,7 @@ spec:
                         description: |-
                           If set to true, the container memory limit will be set to the max heap size + jvm overhead. If set to false, no memory limit will be set but only the heap size.
 
-                          Default is true.
+                          Default is false.
                         nullable: true
                         type: boolean
                       jvmOverhead:
@@ -172,24 +120,31 @@ spec:
                       Use a git repository as the template.
 
                       The repository will be checked out at every server start. Fast-forward will be used if possible. Shallow clone is used if not cloned before.
-                    properties:
-                      branch:
-                        description: The branch to check out. If not set, the default branch is used.
-                        nullable: true
-                        type: string
-                      path:
-                        description: A subdirectory which contains the files.
-                        nullable: true
-                        type: string
-                      repository:
-                        description: |-
-                          The url to the git repository to check out.
+                    items:
+                      properties:
+                        branch:
+                          description: The branch to check out. If not set, the default branch is used.
+                          nullable: true
+                          type: string
+                        path:
+                          description: The path inside the repository to use as the template.
+                          nullable: true
+                          type: string
+                        paths:
+                          items:
+                            type: string
+                          nullable: true
+                          type: array
+                        repository:
+                          description: |-
+                            The url to the git repository to check out.
 
-                          This can be any valid git url implemented in JGit (which should be equal to original git).
-                        type: string
-                    required:
-                    - repository
-                    type: object
+                            This can be any valid git url implemented in JGit (which should be equal to original git).
+                          type: string
+                      required:
+                      - repository
+                      type: object
+                    type: array
                   ref:
                     description: NOT IMPLEMENTED YET
                     properties:
@@ -222,7 +177,7 @@ spec:
             type: object
         required:
         - spec
-        title: MinecraftServerV1Alpha1
+        title: MinecraftProxyV1Alpha1
         type: object
     served: true
     storage: true

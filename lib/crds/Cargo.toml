@@ -1,0 +1,23 @@
+[package]
+name = "crds"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap.workspace = true
+indicatif.workspace = true
+k8s-openapi.workspace = true
+kube.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_yml.workspace = true
+tokio.workspace = true
+
+[[bin]]
+name = "generator"
+path = "src/main/rust/main.rs"
+
+[lib]
+name = "crds"
+path = "src/main/rust/lib.rs"

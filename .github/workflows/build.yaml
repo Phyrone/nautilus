@@ -21,3 +21,17 @@ jobs:
         run: ./gradlew build
       - name: Test
         run: ./gradlew test
+  build_rust:
+    name: Build Rust
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+      - name: Build
+        run: cargo build --verbose
+      - name: Test
+        run: cargo test --verbose

@@ -14,6 +14,7 @@ dependencies {
 
     implementation(libs.bundles.kotlin.stdlib)
     implementation(libs.bundles.kotlin.coroutines)
+    implementation(libs.bundles.koin)
     implementation(libs.k8s.client)
     implementation(libs.bundles.koin)
     implementation(libs.guava)
