@@ -26,7 +26,7 @@ allprojects {
 
 dependencies {
     dokkaPlugin("org.jetbrains.dokka:mathjax-plugin:1.9.20")
-    dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.9.20")
+    dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:2.0.0")
 }
 
 tasks {
