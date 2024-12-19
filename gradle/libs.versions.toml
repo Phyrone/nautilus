@@ -31,7 +31,7 @@ progressbar = "0.10.1"
 jline = "3.28.0"
 
 # Protobuf (except gradle plugin)
-protobuf-version = "4.29.1"
+protobuf-version = "4.29.2"
 grpc-version = "1.69.0"
 grpc-kotlin-version = "1.4.1"
 
