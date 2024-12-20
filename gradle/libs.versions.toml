@@ -11,7 +11,7 @@ ktlint-plugin-version = "12.1.2"
 ktor = "3.0.3"
 kotlin-version = "2.1.0"
 dokka-version = "2.0.0"
-coroutines-version = "1.9.0"
+coroutines-version = "1.10.0"
 ksp-version = "2.1.0-1.0.29"
 
 # Libraries
