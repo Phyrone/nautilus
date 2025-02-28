@@ -5,7 +5,7 @@ protobuf-plugin-version = "0.9.4"
 jib-plugin-version = "3.4.4"
 versions-plugin-version = "0.52.0"
 shadow-plugin-version = "8.1.1"
-ktlint-plugin-version = "12.1.2"
+ktlint-plugin-version = "12.2.0"
 
 # Kotlin, and closely related
 ktor = "3.1.1"
