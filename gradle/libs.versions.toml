@@ -32,7 +32,7 @@ jline = "3.29.0"
 
 # Protobuf (except gradle plugin)
 protobuf-version = "4.29.3"
-grpc-version = "1.70.0"
+grpc-version = "1.71.0"
 grpc-kotlin-version = "1.4.1"
 
 #flaxoos-extra-plugins-version = "1.2.10"
