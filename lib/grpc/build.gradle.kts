@@ -39,7 +39,7 @@ protobuf {
             //artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.version}"
         }
         create("grpckt") {
-            artifact = "io.grpc:protoc-gen-grpc-kotlin:1.4.1:jdk8@jar"
+            artifact = "io.grpc:protoc-gen-grpc-kotlin:1.4.3:jdk8@jar"
             //artifact = "io.grpc:protoc-gen-grpc-kotlin:${libs.versions.grpc.kotlin.version}:jdk8@jar"
         }
     }
