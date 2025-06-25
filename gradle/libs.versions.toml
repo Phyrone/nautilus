@@ -12,7 +12,7 @@ ktor = "3.2.0"
 kotlin-version = "2.2.0"
 dokka-version = "2.0.0"
 coroutines-version = "1.10.2"
-ksp-version = "2.1.21-2.0.2"
+ksp-version = "2.2.0-2.0.2"
 
 # Libraries
 jgit-version = "7.3.0.202506031305-r"
