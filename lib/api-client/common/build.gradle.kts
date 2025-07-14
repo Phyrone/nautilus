@@ -10,7 +10,7 @@ dependencies{
     implementation(libs.bundles.koin)
 
     implementation(libs.bundles.ktor.client)
-    implementation("io.ktor:ktor-client-okhttp-jvm:3.2.1")
+    implementation("io.ktor:ktor-client-okhttp-jvm:3.2.2")
 
 
 }
