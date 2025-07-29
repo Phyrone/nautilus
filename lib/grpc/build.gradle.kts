@@ -35,7 +35,7 @@ protobuf {
     }
     plugins {
         create("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.73.0"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.74.0"
             //artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.version}"
         }
         create("grpckt") {
