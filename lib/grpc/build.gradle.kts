@@ -30,7 +30,7 @@ sourceSets {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.31.1"
+        artifact = "com.google.protobuf:protoc:4.32.0"
         //artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.version}"
     }
     plugins {
