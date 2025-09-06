@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 clap = { version = "4.5.20", features = ["derive", "env", "string", "unicode"] }
 indicatif = { version = "0.18.0", features = ["futures", "improved_unicode", "rayon", "tokio", "unicode-segmentation"] }
-k8s-openapi = { version = "0.25.0", features = ["latest", "schemars"] }
+k8s-openapi = { version = "0.26.0", features = ["latest", "schemars"] }
 kube = { version = "1.0.0", features = ["derive"] }
 schemars = "1.0.0"
 serde = { version = "1.0.210", features = ["derive", "rc", "alloc"] }
