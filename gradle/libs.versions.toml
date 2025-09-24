@@ -3,7 +3,7 @@
 # Gradle Plugins
 protobuf-plugin-version = "0.9.5"
 jib-plugin-version = "3.4.5"
-versions-plugin-version = "0.52.0"
+versions-plugin-version = "0.53.0"
 shadow-plugin-version = "8.1.1"
 ktlint-plugin-version = "13.1.0"
 
