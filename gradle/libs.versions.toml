@@ -27,7 +27,7 @@ koin-version = "4.1.1"
 koin-annotations-version = "2.1.0"
 mccoroutines-version = "2.22.0"
 picocli-version = "4.7.7"
-progressbar = "0.10.1"
+progressbar = "0.10.2"
 jline = "3.30.6"
 
 # Protobuf (except gradle plugin)
