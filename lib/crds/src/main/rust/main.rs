@@ -22,7 +22,9 @@ async fn main() {
                 let mut buffer = String::new();
                 for crd in crds {
                     buffer.push_str("---\n");
-                    buffer.push_str(&serde_yml::to_string(&crd).expect("Failed to serialize CRD"));
+                    buffer.push_str(
+                        &serde_yaml_ng::to_string(&crd).expect("Failed to serialize CRD"),
+                    );
                 }
                 if let Some(output) = instruction.output {
                     //check if the output is a directory
@@ -43,7 +45,8 @@ async fn main() {
                 for crd in crds {
                     let name = crd.name_any();
                     let file_name = format!("{}.yaml", name);
-                    let file_yaml = serde_yml::to_string(&crd).expect("Failed to serialize CRD");
+                    let file_yaml =
+                        serde_yaml_ng::to_string(&crd).expect("Failed to serialize CRD");
                     let output_file = target_dir.join(file_name);
                     tokio::fs::write(output_file, file_yaml)
                         .await
@@ -56,7 +59,7 @@ async fn main() {
                 println!("---");
                 println!(
                     "{}",
-                    serde_yml::to_string(&crd).expect("Failed to serialize CRD")
+                    serde_yaml_ng::to_string(&crd).expect("Failed to serialize CRD")
                 );
             }
         }
@@ -67,7 +70,7 @@ async fn main() {
             let multi_progress = MultiProgress::new();
             let mut jobs = JoinSet::new();
             let crds_api = Api::<CustomResourceDefinition>::all(client.clone());
-            let params = PatchParams::apply("nautilus-crd-generator");
+            let params = PatchParams::apply("nautilus-crd-generator").force();
             for crd in crds {
                 let progress = ProgressBar::new(1);
                 progress.set_style(ProgressStyle::default_spinner());

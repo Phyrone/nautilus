@@ -1,0 +1,5 @@
+apiVersion: nautilus.phyrone.de/v1alpha1
+kind: MinecraftCluster
+metadata:
+  name: main
+spec: {}
