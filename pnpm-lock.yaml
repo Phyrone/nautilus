@@ -6,7 +6,7 @@ settings:
 
 overrides:
   ws@<8: 7.5.11
-  ws@>=8: 8.20.1
+  ws@>=8: 8.21.0
   joi@^17: 17.13.6
   path-to-regexp@^1: 1.9.0
 
@@ -5045,8 +5045,8 @@ packages:
       utf-8-validate:
         optional: true
 
-  ws@8.20.1:
-    resolution: {integrity: sha512-It4dO0K5v//JtTXuPkfEOaI3uUN87iYPnqo/ZzqCoG3g8uhA66QUMs/SrM0YK7/NAu+r4LMh/9dq2A7k+rHs+w==}
+  ws@8.21.0:
+    resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -11544,7 +11544,7 @@ snapshots:
       sockjs: 0.3.24
       spdy: 4.0.2(supports-color@8.1.1)
       webpack-dev-middleware: 7.4.6(webpack@5.96.1)
-      ws: 8.20.1
+      ws: 8.21.0
     optionalDependencies:
       webpack: 5.96.1
     transitivePeerDependencies:
@@ -11639,7 +11639,7 @@ snapshots:
 
   ws@7.5.11: {}
 
-  ws@8.20.1: {}
+  ws@8.21.0: {}
 
   wsl-utils@0.1.0:
     dependencies:
