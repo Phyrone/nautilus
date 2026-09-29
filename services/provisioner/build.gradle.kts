@@ -35,7 +35,7 @@ application {
 }
 jib {
     from {
-        image = "eclipse-temurin:22-jdk"
+        image = "eclipse-temurin:21-jre"
         platforms {
             platform {
                 os = "linux"

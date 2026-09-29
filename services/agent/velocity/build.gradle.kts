@@ -12,8 +12,8 @@ repositories {
 dependencies {
     implementation(project(":agent:shared"))
 
-    compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
-    kapt("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+    compileOnly("com.velocitypowered:velocity-api:3.5.1")
+    kapt("com.velocitypowered:velocity-api:3.5.1")
 
     // Coroutines
     implementation(libs.bundles.mcroutines.velocity)

@@ -17,6 +17,14 @@ tasks {
     shadowJar {
         enabled = true
         archiveClassifier.set("")
+
+        // Let transformers see every duplicate (service files, kotlin module metadata), drop other duplicates
+        // https://gradleup.com/shadow/configuration/merging/#handling-duplicates-strategy
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        mergeServiceFiles()
+        filesNotMatching(listOf("META-INF/services/**", "META-INF/*.kotlin_module")) {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        }
     }
     build {
         dependsOn(shadowJar)
