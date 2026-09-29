@@ -11,7 +11,7 @@ repositories {
 dependencies {
     implementation(project(":agent:shared"))
 
-    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     // Coroutines
     implementation(libs.bundles.mcroutines.folia)

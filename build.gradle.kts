@@ -22,27 +22,44 @@ allprojects {
     repositories {
         mavenCentral()
     }
+    // Compile every JVM module with Java 21, independent of the JDK running Gradle
+    // (the Minecraft platform APIs in use target Java 21)
+    plugins.withId("java") {
+        extensions.configure<JavaPluginExtension> {
+            toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+        }
+    }
 }
 
 dependencies {
-    dokkaPlugin("org.jetbrains.dokka:mathjax-plugin:2.0.0")
-    dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:2.0.0")
+    val dokkaVersion =
+        libs.versions.dokka.version
+            .get()
+    dokkaPlugin("org.jetbrains.dokka:mathjax-plugin:$dokkaVersion")
+    dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:$dokkaVersion")
+
+    // Modules aggregated into the multi-module documentation (./gradlew dokkaGenerate -> build/dokka/html)
+    dokka(project(":lib:grpc"))
+    dokka(project(":lib:k8s"))
+    dokka(project(":lib:shared"))
+    dokka(project(":agent"))
+    dokka(project(":agent:shared"))
+    dokka(project(":agent:paper"))
+    dokka(project(":agent:velocity"))
+    dokka(project(":agent:bungee"))
+    dokka(project(":builder"))
+    dokka(project(":builder:shared"))
+    dokka(project(":provisioner"))
+}
+
+dokka {
+    moduleName.set("Nautilus")
 }
 
 tasks {
-    named("dokkaHtmlMultiModule") {
-        dependsOn(project.getTasksByName("dokkaHtmlMultiModule", true).also { it.remove(this) })
-    }
-    named("dokkaJekyllMultiModule") {
-        dependsOn(project.getTasksByName("dokkaJekyllMultiModule", true).also { it.remove(this) })
-    }
-    named("dokkaGfmMultiModule") {
-        dependsOn(project.getTasksByName("dokkaGfmMultiModule", true).also { it.remove(this) })
-    }
-
     clean {
-        this.setDelete(projectDir.resolve("build"))
-        this.setDelete(projectDir.resolve("target"))
+        // Also remove the Cargo target directory of the Rust workspace
+        delete(layout.projectDirectory.dir("target"))
     }
 }
 idea {

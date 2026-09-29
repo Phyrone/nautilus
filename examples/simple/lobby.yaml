@@ -3,6 +3,9 @@ kind: MinecraftServer
 metadata:
   name: lobby
 spec:
+  # The cluster (see cluster.yaml) this server belongs to
+  cluster:
+    name: main
   replicas: 2
   resources:
     memory:

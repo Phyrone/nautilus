@@ -1,0 +1,22 @@
+[package]
+name = "operator"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+clap.workspace = true
+clap-verbosity-flag.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+futures.workspace = true
+kube.workspace = true
+k8s-openapi.workspace = true
+lib-crds.workspace = true
+serde_json.workspace = true
+
+tracing.workspace = true
+tracing-subscriber.workspace = true
+error-stack.workspace = true
+thiserror.workspace = true
+
+bytesize.workspace = true

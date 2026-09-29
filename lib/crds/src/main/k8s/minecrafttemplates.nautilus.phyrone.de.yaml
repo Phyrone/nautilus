@@ -5,15 +5,12 @@ metadata:
 spec:
   group: nautilus.phyrone.de
   names:
-    categories: []
     kind: MinecraftTemplate
     plural: minecrafttemplates
-    shortNames: []
     singular: minecrafttemplate
   scope: Namespaced
   versions:
-  - additionalPrinterColumns: []
-    name: v1alpha1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: Auto-generated derived type for MinecraftTemplateV1Alpha1Spec via `CustomResource`

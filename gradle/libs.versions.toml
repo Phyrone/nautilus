@@ -1,18 +1,17 @@
 [versions]
 
 # Gradle Plugins
-protobuf-plugin-version = "0.9.5"
-jib-plugin-version = "3.4.5"
+protobuf-plugin-version = "0.10.0"
+jib-plugin-version = "3.5.4"
 versions-plugin-version = "0.52.0"
-shadow-plugin-version = "8.1.1"
+shadow-plugin-version = "9.6.1"
 ktlint-plugin-version = "13.1.0"
 
 # Kotlin, and closely related
 ktor = "3.3.0"
 kotlin-version = "2.2.20"
-dokka-version = "2.0.0"
+dokka-version = "2.2.0"
 coroutines-version = "1.10.2"
-ksp-version = "2.2.20-2.0.3"
 
 # Libraries
 jgit-version = "7.3.0.202506031305-r"
@@ -20,7 +19,6 @@ jackson-version = "2.19.2"
 slf4j-version = "2.0.17"
 logback-version = "1.5.18"
 guava-version = "33.4.8-jre"
-bouncycastle-version = "1.82"
 jib-version = "0.27.3"
 kubernetes-client = "7.4.0"
 koin-version = "4.1.1"
@@ -104,14 +102,9 @@ grpc-netty = { module = "io.grpc:grpc-netty-shaded", version.ref = "grpc-version
 # Guava
 guava = { module = "com.google.guava:guava", version.ref = "guava-version" }
 
-# Bouncy Castle
-bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle-version" }
-bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle-version" }
-
 # Kubernetes Client
 k8s-client = { module = "io.fabric8:kubernetes-client", version.ref = "kubernetes-client" }
 k8s-crds-annotations = { module = "io.fabric8:generator-annotations", version.ref = "kubernetes-client" }
-k8s-crds-generator = { module = "io.fabric8:crd-generator-apt", version.ref = "kubernetes-client" }
 
 # JGit
 jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit-version" }
@@ -186,10 +179,6 @@ jackson = [
     "jackson-dataformat-toml",
     "jackon-module-kotlin",
 ]
-bouncycastle = [
-    "bouncycastle-bcprov",
-    "bouncycastle-bcpkix",
-]
 
 logging = [
     "slf4j",
@@ -235,7 +224,7 @@ mcroutines-bungee = [
 [plugins]
 
 versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugin-version" }
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow-plugin-version" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow-plugin-version" }
 
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-version" }
@@ -245,5 +234,4 @@ kotlin-plugin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = 
 jetbrains-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka-version" }
 google-jib = { id = "com.google.cloud.tools.jib", version.ref = "jib-plugin-version" }
 google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin-version" }
-google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
 fabric8-crds-generator = { id = "io.fabric8.java-generator", version.ref = "kubernetes-client" }

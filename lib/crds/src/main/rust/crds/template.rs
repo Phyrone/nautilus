@@ -1,4 +1,3 @@
-use k8s_openapi::api::core::v1::ObjectReference;
 use kube::CustomResource;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -12,8 +11,7 @@ use serde::{Deserialize, Serialize};
     status = "MinecraftTemplateV1Alpha1Status",
     namespaced
 )]
-pub struct MinecraftTemplateV1Alpha1Spec {
-}
+pub struct MinecraftTemplateV1Alpha1Spec {}
 
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct MinecraftTemplateV1Alpha1Status {}
