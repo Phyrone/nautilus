@@ -30,17 +30,14 @@ sourceSets {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.32.1"
-        //artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.version}"
+        artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.version.get()}"
     }
     plugins {
         create("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.75.0"
-            //artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.version}"
+            artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.version.get()}"
         }
         create("grpckt") {
-            artifact = "io.grpc:protoc-gen-grpc-kotlin:1.5.0:jdk8@jar"
-            //artifact = "io.grpc:protoc-gen-grpc-kotlin:${libs.versions.grpc.kotlin.version}:jdk8@jar"
+            artifact = "io.grpc:protoc-gen-grpc-kotlin:${libs.versions.grpc.kotlin.version.get()}:jdk8@jar"
         }
     }
 
