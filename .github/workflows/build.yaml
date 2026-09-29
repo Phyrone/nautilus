@@ -21,3 +21,33 @@ jobs:
         run: ./gradlew build
       - name: Test
         run: ./gradlew test
+
+  build_rust:
+    name: Build Rust
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v5
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Cargo Cache
+        uses: Swatinem/rust-cache@v2
+      - name: Check Formatting
+        run: cargo fmt --all --check
+      - name: Build
+        run: cargo build --workspace --locked
+      - name: Test
+        run: cargo test --workspace --locked
+      - name: Clippy
+        run: cargo clippy --workspace --locked
+      # The CRD YAML (input of the Java code generator) must match the Rust definitions
+      - name: Check generated CRDs are up to date
+        run: |
+          cargo run --locked -p crds --bin generator -- export -o lib/crds/src/main/k8s
+          if [ -n "$(git status --porcelain lib/crds/src/main/k8s)" ]; then
+            git status --porcelain lib/crds/src/main/k8s
+            echo "::error::CRDs are outdated, run: cargo run -p crds --bin generator -- export -o lib/crds/src/main/k8s"
+            exit 1
+          fi
