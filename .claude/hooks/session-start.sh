@@ -9,7 +9,7 @@ fi
 cd "${CLAUDE_PROJECT_DIR:-$(pwd)}"
 
 # Rust (Cargo workspace): fetch crates and pre-build so tests/clippy start fast.
-rustup component add rustfmt clippy >/dev/null 2>&1 || true
+rustup component add rustfmt clippy
 cargo fetch --locked
 cargo build --workspace --locked
 
@@ -24,5 +24,7 @@ for attempt in 1 2 3; do
     break
   fi
   echo "warning: gradle assemble failed (attempt $attempt)" >&2
-  sleep $((attempt * 20))
+  if [ "$attempt" -lt 3 ]; then
+    sleep $((attempt * 20))
+  fi
 done || true
