@@ -3,34 +3,35 @@
 # Gradle Plugins
 protobuf-plugin-version = "0.10.0"
 jib-plugin-version = "3.5.4"
-versions-plugin-version = "0.52.0"
+versions-plugin-version = "0.64.0"
 shadow-plugin-version = "9.6.1"
-ktlint-plugin-version = "13.1.0"
+ktlint-plugin-version = "14.2.0"
 
 # Kotlin, and closely related
-ktor = "3.3.0"
-kotlin-version = "2.2.20"
+ktor = "3.6.0"
+kotlin-version = "2.4.20"
 dokka-version = "2.2.0"
-coroutines-version = "1.10.2"
+coroutines-version = "1.11.0"
 
 # Libraries
-jgit-version = "7.3.0.202506031305-r"
-jackson-version = "2.19.2"
-slf4j-version = "2.0.17"
-logback-version = "1.5.18"
-guava-version = "33.4.8-jre"
-jib-version = "0.27.3"
-kubernetes-client = "7.4.0"
-koin-version = "4.1.1"
-koin-annotations-version = "2.1.0"
-mccoroutines-version = "2.22.0"
+jgit-version = "7.8.0.202609011348-r"
+jackson-version = "2.22.3"
+jackson-annotations-version = "2.22"
+slf4j-version = "2.0.20"
+logback-version = "1.6.4"
+guava-version = "33.7.1-jre"
+jib-version = "0.28.2"
+kubernetes-client = "8.0.0"
+koin-version = "4.2.2"
+koin-annotations-version = "2.3.1"
+mccoroutines-version = "2.23.0"
 picocli-version = "4.7.7"
 progressbar = "0.10.2"
-jline = "3.30.17"
+jline = "4.4.6"
 
 # Protobuf (except gradle plugin)
-protobuf-version = "4.32.1"
-grpc-version = "1.75.0"
+protobuf-version = "4.36.2"
+grpc-version = "1.84.0"
 grpc-kotlin-version = "1.5.0"
 
 #flaxoos-extra-plugins-version = "1.2.10"
@@ -72,7 +73,7 @@ ktor-client-bom-remover = { module = "io.ktor:ktor-client-bom-remover", version.
 # Jackson
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson-version" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }
-jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-version" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-annotations-version" }
 jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
 jackson-dataformat-toml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-toml", version.ref = "jackson-version" }
 jackon-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
@@ -223,7 +224,7 @@ mcroutines-bungee = [
 
 [plugins]
 
-versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugin-version" }
+versions = { id = "io.github.ben-manes.versions", version.ref = "versions-plugin-version" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow-plugin-version" }
 
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }

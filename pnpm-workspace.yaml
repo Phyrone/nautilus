@@ -1,3 +1,5 @@
 packages:
   - 'page'
   - 'services/*'
+allowBuilds:
+  core-js: false
